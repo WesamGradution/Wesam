@@ -3,7 +3,7 @@ import signUpForm from "../models/signIpForm.js"
 export const getPosts = async (req,res) => {
     try {
         const signUpInfo = await signUpForm.find()
-        //console.log(signUpInfo)
+        console.log(signUpInfo)
 
         res.status(200).json(signUpInfo)
     } catch (error) {

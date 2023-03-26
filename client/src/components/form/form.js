@@ -2,30 +2,24 @@ import React, { useState } from "react";
 import "./style.css"
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { createPost } from "../../actions/posts";
-import * as api from "./../../API"
+import { createForm } from "../../actions/posts";
+import { useSelector } from "react-redux";
+
 function Form() {
     const[formInfo,setFormInfo] = useState({
         userName: "",
         email: "",
         password: ""
     });
-    //const dispatch = useDispatch();
+
+    const dispatch = useDispatch();
 
     const handelForm = (e) =>{
         e.preventDefault()
-        let axiosConfig = {
-          headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              "Access-Control-Allow-Origin": "*",
-          }
-        };
-        console.log(formInfo)
-        axios.post("http://localhost:5000/posts",formInfo,axiosConfig).then(res => console.log(res.data))
 
-        //api.createPost(formInfo)
-        //dispatch(createPost(formInfo))
+        dispatch(createForm(formInfo))
     }
+
 
     return(
         <>

@@ -1,4 +1,4 @@
- export default (posts =[],action) => {
+ const form =  (posts ="k",action) => {
     switch (action.type) {
         case 'FETCH_ALL':
             return action.payload;
@@ -9,3 +9,4 @@
     }
 }
 
+export default form;

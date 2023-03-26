@@ -11,7 +11,11 @@ import * as ReactDOMClient from 'react-dom/client';
 
 
 
-//const store = createStore(reducers,compose(applyMiddleware(thunk)))
+const store = createStore(reducers,compose(applyMiddleware(thunk)))
 
 const root = ReactDOMClient.createRoot(document.getElementById('root'));
-root.render(<App />);
+root.render(
+<Provider store={store}>
+<App />
+</Provider>
+);
