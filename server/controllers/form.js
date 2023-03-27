@@ -1,6 +1,6 @@
 import signUpForm from "../models/signIpForm.js"
 
-export const getPosts = async (req,res) => {
+export const getFormInfo = async (req,res) => {
     try {
         const signUpInfo = await signUpForm.find()
         console.log(signUpInfo)
@@ -13,7 +13,7 @@ export const getPosts = async (req,res) => {
     }
 }
 
-export const createPost = async (req,res) => {
+export const postFormInfo = async (req,res) => {
     const post =  req.body;
     console.log(post)
 

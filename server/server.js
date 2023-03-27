@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors"
 
-import router from "./routes/posts.js";
+import router from "./routes/form.js";
 
 const app = express()
 
@@ -13,8 +13,8 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors())
 app.use("/posts",router)
 
-const CONNECTION_URL = "mongodb+srv://Wesam:xWkIvv6Un1HyCneG@cluster0.sawbkon.mongodb.net/?retryWrites=true&w=majority"
-
+//const CONNECTION_URL = "mongodb+srv://Wesam:xWkIvv6Un1HyCneG@cluster0.sawbkon.mongodb.net/?retryWrites=true&w=majority"
+const CONNECTION_URL = "mongodb://localhost:27017/UsersData"
 mongoose.connect(CONNECTION_URL,{useNewUrlParser:true})
 .then(() => app.listen(5000,() => {
     console.log("the server is running in port 5000")

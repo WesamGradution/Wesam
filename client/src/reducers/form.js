@@ -1,4 +1,4 @@
- const form =  (posts ="k",action) => {
+ const form =  (posts =[],action) => {
     switch (action.type) {
         case 'FETCH_ALL':
             return action.payload;

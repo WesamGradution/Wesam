@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const signUpSchema = new mongoose.Schema({
-    userName: String,
+    username: String,
     email: String,
     password: String
 })
