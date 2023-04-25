@@ -1,11 +1,11 @@
- const form =  (posts =[],action) => {
+ const form =  (forms =[],action) => {
     switch (action.type) {
         case 'FETCH_ALL':
             return action.payload;
         case "CREATE":
-            return [...posts,action.payload]
+            return [...forms,action.payload]
         default:
-            return posts
+            return forms
     }
 }
 

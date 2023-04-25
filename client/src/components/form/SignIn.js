@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import "./style.css"
+import React, { useEffect, useState } from "react";
+import styles from "./form.module.css"
 import { useDispatch, useSelector } from "react-redux";
-import { createForm,getForms } from "../../actions/posts";
+import { createForm,getForms } from "../../actions/form";
 import { Link, useNavigate } from "react-router-dom";
 
 function SignIn() {
@@ -10,25 +10,44 @@ function SignIn() {
         password: ""
     });
 
-    const [errorMessgae,serErrorMessage] = useState("")
+    const [errorMessgae,setErrorMessage] = useState("")
 
     const dispatch = useDispatch();
-    dispatch(getForms())
+
+    let flag = false
+
+    
+
+    useEffect(() =>{
+      dispatch(getForms())
+      
+    },[])
 
     const forms = useSelector((state) => state.form)
+    console.log(forms)
+    
     
     const navigate = useNavigate()
+
     const handelForm = (e) =>{
         e.preventDefault()
 
         forms.forEach((form) =>{
           if (formInfo.email === form.email && formInfo.password === form.password){
-            naviHome()
-          }else{
-            serErrorMessage("email or password is not correct")
+            flag = true
+            
+          }else {
+            flag = false
           }
 
         })
+
+        if (flag === false){
+          setErrorMessage("email or password is not correct")
+        }else if (flag === true){
+          naviHome()
+        }
+        
         
 
         
@@ -37,26 +56,29 @@ function SignIn() {
     function naviHome(){
       setTimeout(() =>{
         navigate("/home")
-      },1000)
+      },5000)
     }
 
 
     return(
-        <>
-        <h1>Sign in </h1>
-        <p>{errorMessgae}</p>
-      <form  onSubmit={handelForm} >
+        
+      <div className={styles.container}>
+            <h1 className={styles.container.h1}>Sign in </h1>
+            <p>{errorMessgae}</p>
+          <form  onSubmit={handelForm}  >
 
-        <input name="email" placeholder="email" value={formInfo.email}
-        onChange={(e) => setFormInfo({...formInfo,email:e.target.value})} />
+            <input name="email" placeholder="email" value={formInfo.email} className={styles.input}
+            onChange={(e) => setFormInfo({...formInfo,email:e.target.value})} />
 
-        <input name="password" placeholder="password" value={formInfo.password} type="password"
-        onChange={(e)=> setFormInfo({...formInfo,password:e.target.value})} ></input>
-        <button>Submit</button>
-      </form>
-      <br/>
-      <p>You don't have account? <Link to="/signUp">Sign up</Link> </p>
-      </>
+            <input name="password" placeholder="password" value={formInfo.password} type="password" className={styles.input}
+            onChange={(e)=> setFormInfo({...formInfo,password:e.target.value})} ></input>
+            <button className={styles.button}>Submit</button>
+            <br/>
+            <p>You don't have account? <Link to="/signUp">Sign up</Link> </p>
+        </form>
+          
+      </div>
+      
     )
 }
 
