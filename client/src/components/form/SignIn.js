@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./form.module.css"
 import { useDispatch, useSelector } from "react-redux";
-import { createForm,getForms } from "../../actions/form";
 import { Link, useNavigate } from "react-router-dom";
-
+import {useGetFormInfoQuery} from "../../reduxToolKit/api"
 function SignIn() {
     const[formInfo,setFormInfo] = useState({
         email: "",
@@ -12,19 +11,12 @@ function SignIn() {
 
     const [errorMessgae,setErrorMessage] = useState("")
 
-    const dispatch = useDispatch();
-
     let flag = false
 
     
 
-    useEffect(() =>{
-      dispatch(getForms())
-      
-    },[])
-
-    const forms = useSelector((state) => state.form)
-    console.log(forms)
+    const {data} = useGetFormInfoQuery()
+    console.log(data)
     
     
     const navigate = useNavigate()
@@ -32,7 +24,7 @@ function SignIn() {
     const handelForm = (e) =>{
         e.preventDefault()
 
-        forms.forEach((form) =>{
+        data.forEach((form) =>{
           if (formInfo.email === form.email && formInfo.password === form.password){
             flag = true
             

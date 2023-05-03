@@ -1,9 +1,9 @@
 import React from 'react'
 import {LightModeOutlined,DarkModeOutlined,Menu as MenuIcon,Search,SettingsOutlined,ArrowDropDownOutlined } from "@mui/icons-material"
 import FlexBetween from './FlexBetween'
-import {changeTheme} from "../actions/theme"
 import { useDispatch } from 'react-redux'
 import { AppBar, IconButton, InputBase, Toolbar, useTheme } from '@mui/material'
+import { setMode } from '../reduxToolKit/changeTheme'
 const Navbar = ({
     isSidebarOpen,
     setIsSidebarOpen
@@ -38,7 +38,7 @@ const Navbar = ({
 
             {/* RIGHT SIDE */}
             <FlexBetween gap="1.5rem">
-            <IconButton onClick={()=> dispatch(changeTheme())} sx={{width:48 , height:48}}>
+            <IconButton onClick={()=> dispatch(setMode())} sx={{width:48 , height:48}}>
                 {theme.palette.mode === "dark" ? (
                     <DarkModeOutlined sx={{fontSize:"25px"}} />
                 ):(

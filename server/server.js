@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors"
 
-import router from "./routes/form.js";
+import formRouter from "./routes/form.js";
 import helmet from "helmet";
 import morgan from "morgan";
 
@@ -17,7 +17,8 @@ app.use(morgan("common"))
 app.use(bodyParser.json())
 app.use(cors())
 
-app.use("/posts",router)
+// ROUTES
+app.use("/form",formRouter)
 
 //const CONNECTION_URL = "mongodb+srv://Wesam:xWkIvv6Un1HyCneG@cluster0.sawbkon.mongodb.net/?retryWrites=true&w=majority"
 const CONNECTION_URL = "mongodb://localhost:27017/UsersData"
