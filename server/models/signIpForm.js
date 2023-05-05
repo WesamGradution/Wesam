@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
 const signUpSchema = new mongoose.Schema({
-    username: String,
-    email: String,
-    password: String
+    firstName :String,
+    lastName :String,
+    email :String,
+    phoneNumber :String,
 })
 
 const signUpForm = mongoose.model("signUpInfo",signUpSchema)

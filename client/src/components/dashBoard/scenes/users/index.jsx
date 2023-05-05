@@ -16,8 +16,13 @@ export const Users = () => {
       flex: 1,
     },
     {
-      field: "username",
-      headerName: "Name",
+      field: "firstName",
+      headerName: "First Name",
+      flex: 0.5,
+    },
+    {
+      field: "lastName",
+      headerName: "Last Name",
       flex: 0.5,
     },
     {
@@ -25,8 +30,8 @@ export const Users = () => {
       headerName: "email",
       flex: 1,
     },{
-      field:"password",
-      headerName:"password",
+      field:"phoneNumber",
+      headerName:"Phone Number",
       flex:0.5,
     },
     
