@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./form.module.css"
-import { useDispatch, useSelector } from "react-redux";
-import { createForm,getForms } from "../../actions/form";
+import { useGetFormInfoQuery,usePostFormInfoMutation } from "../../reduxToolKit/api";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 function SignUp() {
     const[formInfo,setFormInfo] = useState({
@@ -18,42 +18,36 @@ function SignUp() {
 
     const dispatch = useDispatch();
 
-    const forms = useSelector((state) => state.form)
+    const {data, isLoading, isSuccess} = useGetFormInfoQuery()
+    const [postFormInfo] = usePostFormInfoMutation()
 
-    console.log(forms)
+    console.log(data)
 
     const handelForm = (e) =>{
         e.preventDefault()
         
-        if (forms.length === 0){
-            dispatch(createForm(formInfo))
-                naviHome()
-                console.log("loop work")
-        }
-        else{
-            forms.forEach((form) =>{
+        if (isLoading) {
+          // show loading indicator
+        } else if (isSuccess) {
+          // check data
+          data.forEach((form) =>{
                     
-                if (formInfo.username === form.username){
-                    setErrorText("user name already taken")
-                }else if (formInfo.email === form.email){
-                    setErrorText("the email aleady taken")
-                }else{
-                    console.log("work")
-                    setErrorText("")
-                    dispatch(createForm(formInfo))
-                    naviHome()
-                }
-            })
-    }
+            if (formInfo.username === form.username){
+              setErrorText("user name already taken")
+            }else if (formInfo.email === form.email){
+              setErrorText("the email aleady taken")
+            }else{
+              console.log("work")
+              setErrorText("")
+              postFormInfo(formInfo)
+              naviHome() // trigger mutation
+            }
+          })
+        }
          
     }
 
-    const naviHome = () => {
-            setTimeout(() => {
-                navigate("/home")
-            },5000)
-        
-    }
+    const naviHome = () => { setTimeout(() => { navigate("/home") },2000) }
     
 
 

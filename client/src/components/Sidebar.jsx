@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {Box,
-    Divider,
     Drawer,
     IconButton,
     List,
@@ -13,7 +12,7 @@ import {Box,
 } from "@mui/material"
 import { useLocation, useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween';
-import { ChevronLeft,SettingsOutlined, ChevronRightOutlined, Group, Groups2Outlined, HomeOutlined, Receipt, ReceiptLongOutlined,ShoppingCartOutlined } from '@mui/icons-material';
+import { ChevronLeft, ChevronRightOutlined,  Groups2Outlined, HomeOutlined, ReceiptLongOutlined,ShoppingCartOutlined } from '@mui/icons-material';
 
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
@@ -38,11 +37,11 @@ const Sidebar = ({
             icon:null
         },
         {
-            text:"Show Customer",
+            text:"Show Users",
             icon:<Groups2Outlined/>
         },
         {
-            text:"add Customer",
+            text:"add User",
             icon:<GroupAddIcon/>
         },
         {

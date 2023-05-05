@@ -8,10 +8,16 @@ export const api = createApi({
         getFormInfo:build.query({
             query:() => "form",
             providesTags:["User"]
+        }),
+        postFormInfo:build.mutation({
+            query: (data) =>({
+                url:"/form",
+                method:"POST",
+                body:data,
+                invalidatesTags:["User"]
+            })
         })
     })
-
-
 })
 
-export const {useGetFormInfoQuery,} = api
+export const {useGetFormInfoQuery, usePostFormInfoMutation} = api

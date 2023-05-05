@@ -1,5 +1,5 @@
 import React from 'react'
-import {LightModeOutlined,DarkModeOutlined,Menu as MenuIcon,Search,SettingsOutlined,ArrowDropDownOutlined } from "@mui/icons-material"
+import {LightModeOutlined,DarkModeOutlined,Menu as MenuIcon,Search,SettingsOutlined } from "@mui/icons-material"
 import FlexBetween from './FlexBetween'
 import { useDispatch } from 'react-redux'
 import { AppBar, IconButton, InputBase, Toolbar, useTheme } from '@mui/material'

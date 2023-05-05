@@ -3,10 +3,11 @@ import { Box,useTheme } from '@mui/material'
 import { useGetFormInfoQuery } from '../../../../reduxToolKit/api'
 import {DataGrid} from "@mui/x-data-grid"
 import Header from "../../../Header"
-export const Customers = () => {
+
+export const Users = () => {
   const theme = useTheme()
   const {data,isLoading} = useGetFormInfoQuery()
-  console.log("🚀 ~ file: index.jsx:8 ~ Customers ~ data:", data)
+  console.log("🚀 ~ file: index.jsx:8 ~ Users ~ data:", data)
   
   const columns = [
     {
@@ -34,7 +35,7 @@ export const Customers = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-    <Header title="CUSTOMERS" subtitle="List of Customers" />
+    <Header title="Users" subtitle="List of Users" />
       <Box
         mt="40px"
         height="75vh"
@@ -74,4 +75,4 @@ export const Customers = () => {
   );
 };
 
-export default Customers;
+export default Users;

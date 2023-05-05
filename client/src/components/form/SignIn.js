@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styles from "./form.module.css"
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {useGetFormInfoQuery} from "../../reduxToolKit/api"
 function SignIn() {
