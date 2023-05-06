@@ -34,6 +34,11 @@ export const Users = () => {
       headerName:"Phone Number",
       flex:0.5,
     },
+    {
+      field:"groupNumber",
+      headerName:"Group Number",
+      flex:0.5,
+    },
     
     
   ];

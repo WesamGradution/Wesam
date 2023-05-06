@@ -24,7 +24,13 @@ export const postFormInfo = async (req,res) => {
 
         res.status(201).json(newpost)
     } catch (error) {
-        res.status(409),json({message:error.message})
+        if (error.code === 11000) {
+            // duplicate key error
+            res.status(409).json({ message: "Email or phone number already exists" });
+          } else {
+            // other errors
+            res.status(500).json({ message: error.message });
+          }
+        }
         
     }
-}
