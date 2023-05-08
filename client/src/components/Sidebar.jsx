@@ -12,7 +12,7 @@ import {Box,
 } from "@mui/material"
 import { useLocation, useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween';
-import { ChevronLeft, ChevronRightOutlined,  Groups2Outlined, HomeOutlined, ReceiptLongOutlined,ShoppingCartOutlined } from '@mui/icons-material';
+import { ChevronLeft, ChevronRightOutlined,  Groups2Outlined, HomeOutlined, ReceiptLongOutlined,ShoppingCartOutlined,Quiz } from '@mui/icons-material';
 
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
@@ -33,7 +33,7 @@ const Sidebar = ({
             icon:<HomeOutlined/>
         },
         {
-            text:"Customers",
+            text:"Users",
             icon:null
         },
         {
@@ -41,9 +41,16 @@ const Sidebar = ({
             icon:<Groups2Outlined/>
         },
         {
-            text:"add User",
+            text:"Add User",
             icon:<GroupAddIcon/>
+        },{
+          text:"Quiz",
+          icon:null
+        },{
+          text:"Add Quiz",
+          icon:<Quiz/>
         },
+
         {
             text:"Transactions",
             icon:<ReceiptLongOutlined/>

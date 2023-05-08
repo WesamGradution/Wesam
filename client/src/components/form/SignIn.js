@@ -23,15 +23,10 @@ function SignIn() {
     const handelForm = (e) =>{
         e.preventDefault()
 
-        data.forEach((form) =>{
-          if (formInfo.email === form.email && formInfo.password === form.password){
-            flag = true
-            
-          }else {
-            flag = false
-          }
-
-        })
+        
+          flag = data.some((form) => {
+            return formInfo.email === form.email && formInfo.password === form.password;
+          })
 
         if (flag === false){
           setErrorMessage("email or password is not correct")
@@ -47,7 +42,7 @@ function SignIn() {
     function naviHome(){
       setTimeout(() =>{
         navigate("/home")
-      },5000)
+      },2000)
     }
 
 

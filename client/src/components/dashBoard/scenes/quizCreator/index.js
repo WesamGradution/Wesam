@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-
+import { Form, Formik } from "formik";
+import * as yup from "yup"
+import Header from "../../../Header";
+import { Box,Button,InputLabel, Select, TextField,MenuItem } from "@mui/material";
 function QuizCreator() {
   const [questions, setQuestions] = useState([]);
 
@@ -95,85 +98,134 @@ function QuizCreator() {
     console.log(formattedQuestions);
   };
 
+  const initialValues = {
+    questions:"",
+    answer:""
+  }
+
+  const quizSchema = yup.object().shape({
+    questions:yup.string().required("requires"),
+    answer:yup.string().required("required"),
+  })
   return (
-    <form onSubmit={handleSubmit}>
-      {questions.map((question, index) => (
-        <div key={index}>
-          <label>
-            Question #{index + 1}
-            <input
+    <Box  m="20px" >
+    <Header title="Quiz" subtitle="Write your own Quiz"></Header>
+
+    <Formik 
+    onSubmit={handleSubmit}
+    initialValues={initialValues}
+    validationSchema={quizSchema}
+    >
+
+      {({values,errors,touched,handleBlur,handleChange,handleSubmit})=>{
+
+        return(
+
+          <Form>
+          {questions.map((question, index) => (
+        <Box display="grid" gap="30px" key={index}>
+          
+            <TextField
               type="text"
+              variant="filled"
+              label="Write Question"
               value={question.question}
+              sx={{gridColumn:"span 1"}}
               onChange={(event) => handleQuestionChange(index, event)}
-              required
+              
             />
-          </label>
-          <br />
+          
           {question.answers.map((answer, answerIndex) => (
-            <div key={answerIndex}>
-              <label>
-                Answer #{answerIndex + 1}
-                <input
+            <Box display="grid"  gap="30px" key={index}>
+              
+                
+                <TextField
                   type="text"
+                  key={answerIndex}
+                  variant="filled"
+                  label="Write Answer"
+                  sx={{gridColumn:"span 1"}}
                   value={answer}
                   onChange={(event) =>
                     handleAnswerChange(index, answerIndex, event)
                   }
-                  required
+                  
                 />
-              </label>
+              
               {question.answers.length > 2 && (
-                <button
+                <Button
                   type="button"
+                  key={answerIndex}
+                  color="secondary"
+                  variant="contained"
                   onClick={() => removeAnswer(index, answerIndex)}
                 >
                   Remove Answer
-                </button>
+                </Button>
               )}
-            </div>
+            </Box>
           ))}
-          <button type="button" onClick={() => addAnswer(index)}>
+          <Button type="button"  color="secondary" variant="contained"
+                   onClick={() => addAnswer(index)}>
             Add Answer
-          </button>
-          <br />
-          <label>
+          </Button>
+          
+          <InputLabel>
             Correct Answer
-            <select
+            <Select
               value={question.correctAnswer}
-              onChange={(event) => handleCorrectAnswerChange(index, event)}
+              onChange={handleCorrectAnswerChange}
               required
             >
-              <option value="">Select an answer</option>
+              <MenuItem value="">Select an answer</MenuItem>
               {question.answers.map((answer, answerIndex) => (
-                <option key={answerIndex} value={answer}>
+                <MenuItem key={answerIndex} value={answer}>
                   {answer}
-                </option>
+                </MenuItem>
               ))}
-            </select>
-          </label>
-          <br />
-          <label>
+            </Select>
+          </InputLabel>
+          
+          <InputLabel>
             T/F Answers
-            <input
+            <TextField
               type="checkbox"
               checked={question.answers[0] === "True" && question.answers[1] === "False"}
               onChange={(event) => handleTrueFalseChange(index, event)}
             />
-          </label>
+          </InputLabel>
           {questions.length > 1 && (
-            <button type="button" onClick={() => removeQuestion(index)}>
+            <Button type="button" color="secondary" variant="contained" onClick={() => removeQuestion(index)}>
               Remove Question
-            </button>
+            </Button>
           )}
-          <hr />
-        </div>
+          
+        </Box>//block of code the parent
       ))}
-      <button type="button" onClick={addQuestion}>
+
+          </Form>
+        )
+
+
+      }}
+    </Formik>
+      
+      <Box></Box>
+      
+      <Box display="flex" justifyContent="end">
+      <Button type="button" color="secondary" variant="contained" onClick={addQuestion}>
         Add Question
-      </button>
-      <br />
-      <button type="submit">Submit</button>
-    </form>
+      </Button>
+      </Box>
+      <Box display="flex" justifyContent="start" >
+      <Button type="submit" color="secondary" variant="contained">Submit</Button>
+      </Box>
+
+
+      <Box/>
+      
+    
+    </Box>
   );
 }
 

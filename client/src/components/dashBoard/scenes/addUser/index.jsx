@@ -190,7 +190,7 @@ export const AddUser = () => {
             name="email"
             error={!!touched.email && errors.email }
             helperText={touched.email && errors.email}
-            sx={{gridColumn:"span 2"}}
+            sx={{gridColumn:"span 1"}}
             />
             <TextField
             fullWidth
@@ -203,7 +203,7 @@ export const AddUser = () => {
             name="password"
             error={!!touched.password && errors.password }
             helperText={touched.password && errors.password}
-            sx={{gridColumn:"span 2"}}
+            sx={{gridColumn:"span 1"}}
             />
             <TextField
             fullWidth
