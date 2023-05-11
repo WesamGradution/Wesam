@@ -17,6 +17,7 @@ export const AddUser = () => {
 
   const handelFormSubmit = (values) => {
     console.log('🚀 ~ file: index.jsx:11 ~ handelFormSubmit ~ values:',values);
+    console.log(values)
     postFormInfo(values)
 
   
