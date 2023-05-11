@@ -1,0 +1,167 @@
+**MongoDB validators**
+required: true,
+unique: true,
+match: /^[a-zA-Z0-9]{3,30}$/ (it means it contains letters and digits with length >= 3)
+min: 0, max: 120
+enum: ['male', 'female']
+validate (build ur own function)
+
+
+*note: _id is unique by default, generated automatically.
+*any startDate is set to new Date() which is the current date.
+
+
+-competitions
+{
+_id: ObjectId,
+group_id: ObjectId,		//required 
+creator_id: ObjectId,		//required
+title: String,
+description: String,
+startDate: Date,		//default new Date()
+endTime: Date,
+pointsAmount: int,		//default 0
+timer: int,			//default null
+attemps: [		// default [empty]
+	{
+	member_id: ObjectId,		//required 
+	score: int,				//required 
+	startDate: Date
+	finishDate: Date		//default new Date()
+	}
+		]
+quizData: [		//required
+	{
+	question: String,		//required 
+	correct_answer: String,		//required 
+	incorrect_answers: [String]		//required 
+	}
+		]
+}
+
+
+
+
+
+-users
+{
+_id: ObjectId,
+admin: boolean		//required
+firstName: String,
+lastName: String,
+email: String,		//required & unique
+phone: String,		//unique
+password: String,		//required
+signUpDate: Date,		//default new Date()
+points: int,		//default 0, min=0
+groups: [ObjectId], // default [empty]
+profilePicture: Buffer
+}
+
+
+
+
+
+-groups
+{
+_id: ObjectId,
+title: String,
+description: String,
+creationDate: Date,		//default new Date()
+admins: [ObjectId]
+members: [ObjectId]		//default [empty]
+notifications: [		//default [empty]
+				{
+				title: String,	
+				message: String,
+				sender_admin_id: ObjectId,
+				sendDate: Date			//default new Date()
+				}
+			]
+
+}
+
+
+
+
+
+-pointsTransaction
+{
+_id: ObjectId
+sender_admin_id: ObjectId, // not required
+receiver_member_id: ObjectId, 		//required
+pointsAmount: int, 					//required
+transactionDate: Date		//default new Date()
+}
+
+
+
+
+
+-item
+{
+_id: ObjectId,
+admin_id: ObjectId,		//required
+group_id: ObjectId, // not required
+name: String,		//required
+description: String,
+quantity: int,		//required
+pricePoints: int,		//required
+itemPicture: Buffer
+}
+
+
+
+
+
+-order
+{
+_id: ObjectId
+item_id: ObjectId,		//required
+member_id: ObjectId,		//required
+quantity: int,		//required
+totalAmount: int,		//required
+orderDate: Date		//default new Date()
+}
+
+
+
+
+
+
+
+-opportunity
+{
+_id: ObjectId,
+group_id: ObjectId,		//not required
+title: String,
+description: String,
+startDate: Date,		//default new Date()
+endDate: Date,
+pointsAmount: int		//default 0
+usersLimit: int		//required
+attemps: [
+	{
+	member_id: ObjectId		//required
+	startDate: Date
+	finishDate: Date		//default new Date()
+	admin_conformation: boolean		//default false
+	}
+		]
+}
+
+
+
+
+later :)
+-chat
+{
+group_id: ObjectId,
+messages: [
+	sender_id: ObjectId,
+	text: String,
+	sendDate: Date
+		]
+}
+
+
