@@ -1,12 +1,12 @@
-import React , { useRef } from 'react'
-import { Box,Button,TextField,InputLabel,MenuItem,Select } from '@mui/material'
+import React , { useRef, useState } from 'react'
+import { Box,Button,TextField,InputLabel,MenuItem,Select,Checkbox,FormGroup, FormControlLabel } from '@mui/material'
 import {Formik} from "formik"
 import * as yup from "yup"
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Header from "../../../Header"
 import Papa from 'papaparse';
 import { usePostFormInfoMutation } from '../../../../reduxToolKit/api'
-
+import { useGetGroupInfoQuery } from '../../../../reduxToolKit/api';
 export const AddUser = () => {
 
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -17,7 +17,7 @@ export const AddUser = () => {
 
   const handelFormSubmit = (values) => {
     console.log('🚀 ~ file: index.jsx:11 ~ handelFormSubmit ~ values:',values);
-    console.log(values)
+    
     postFormInfo(values)
 
   
@@ -121,12 +121,12 @@ export const AddUser = () => {
   
 
   const initialValues = {
+    admin:false,
     firstName :"",
     lastName :"",
     email :"",
     phoneNumber :"",
     password:"",
-    groupNumber:"",
   }
 
   const phoneNumberRegEx = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/
@@ -219,23 +219,39 @@ export const AddUser = () => {
             helperText={touched.phoneNumber && errors.phoneNumber}
             sx={{gridColumn:"span 2"}}
             />
-            <Box display="flex" justifyContent="start" >
-            <InputLabel id="demo-simple-select-label" sx={{ marginRight: 1 }}>Group Number :</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={values.groupNumber}
-            label="Group Number"
+            <FormGroup >
+
+            <FormControlLabel control={<Checkbox 
+            checked={values.admin}  
             onChange={handleChange}
-            name="groupNumber"
-            variant="standard"
+            name="admin"
+            />} label="Admin"></FormControlLabel>
+            </FormGroup>
             
-          >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={4}>4</MenuItem>
-          </Select>
+            <Box display="flex" justifyContent="start"  sx={{flexDirection:"column"}} >
+            
+            
+
+            {/*<InputLabel id="demo-simple-select-label" sx={{ marginRight: 1 }}>Group Number :</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={values.groupNumber}
+                label="Group Number"
+                onChange={handleChange}
+                name="groupNumber"
+                variant="standard"
+                
+              >
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+                <MenuItem value={4}>4</MenuItem>
+              </Select>*/}
+          
+          </Box>
+          <Box display="flex" justifyContent="start">
+          
           </Box>
             
               

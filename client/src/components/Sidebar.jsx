@@ -15,7 +15,7 @@ import FlexBetween from './FlexBetween';
 import { ChevronLeft, ChevronRightOutlined,  Groups2Outlined, HomeOutlined, ReceiptLongOutlined,ShoppingCartOutlined,Quiz } from '@mui/icons-material';
 
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
-
+import GroupIcon from '@mui/icons-material/Group';
 const Sidebar = ({
     drawerWidth,
     isSidebarOpen,
@@ -43,10 +43,25 @@ const Sidebar = ({
         {
             text:"Add User",
             icon:<GroupAddIcon/>
-        },{
+        },
+        {
+          text:"Group",
+          icon:null
+        },
+        {
+          text:"Create Group",
+          icon:<GroupIcon/>
+        },
+        {
+          text:"Assign Users",
+          icon:<GroupAddIcon/>
+        },
+        {
           text:"Quiz",
           icon:null
-        },{
+        },
+        
+        {
           text:"Add Quiz",
           icon:<Quiz/>
         },

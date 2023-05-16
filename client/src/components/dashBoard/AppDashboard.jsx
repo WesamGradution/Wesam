@@ -10,6 +10,8 @@ import Layout from './scenes/layoutt'
 import { Users } from './scenes/users'
 import { AddUser } from './scenes/addUser'
 import QuizCreator from "./scenes/quizCreator"
+import CreateGroup from './scenes/groups'
+import AddToGroup from './scenes/assignToGroup'
 const AppDashboard = () => {
     const mode = useSelector((state) => state.global.mode)
     const theme = useMemo(() => createTheme(themeSettings(mode)),[mode])
@@ -24,6 +26,8 @@ const AppDashboard = () => {
               <Route path='show users' element={<Users/>}></Route>
               <Route path="Add user" element={<AddUser/>}></Route>
               <Route path='Add Quiz' element={<QuizCreator/>}></Route>
+              <Route path='create group' element={<CreateGroup/>}></Route>
+              <Route path='assign users' element={<AddToGroup/>}></Route>
               </Route>
             </Routes>
         </ThemeProvider>

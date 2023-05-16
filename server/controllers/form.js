@@ -1,4 +1,4 @@
-import signUpForm from "../models/signIpForm.js"
+import signUpForm from "../models/user.js"
 
 export const getFormInfo = async (req,res) => {
     try {

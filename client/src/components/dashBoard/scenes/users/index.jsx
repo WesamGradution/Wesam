@@ -1,5 +1,5 @@
-import React from 'react'
-import { Box,useTheme } from '@mui/material'
+import React, { useState } from 'react'
+import { Box,Button,useTheme } from '@mui/material'
 import { useGetFormInfoQuery } from '../../../../reduxToolKit/api'
 import {DataGrid} from "@mui/x-data-grid"
 import Header from "../../../Header"
@@ -7,6 +7,7 @@ import Header from "../../../Header"
 export const Users = () => {
   const theme = useTheme()
   const {data,isLoading} = useGetFormInfoQuery()
+  
   console.log("🚀 ~ file: index.jsx:8 ~ Users ~ data:", data)
   
   const columns = [
@@ -35,8 +36,18 @@ export const Users = () => {
       flex:0.5,
     },
     {
-      field:"groupNumber",
+      field:"groups",
       headerName:"Group Number",
+      flex:0.5,
+    },
+    {
+      field:"points",
+      headerName:"Points",
+      flex:0.5,
+    },
+    {
+      field:"admin",
+      headerName:"Admin",
       flex:0.5,
     },
     

@@ -4,7 +4,7 @@ import {createApi,fetchBaseQuery} from "@reduxjs/toolkit/query/react"
 export const api = createApi({
     baseQuery:fetchBaseQuery({baseUrl:"http://localhost:5000/"}),
     reducerPath:"adminApi",
-    tagTypes:["User","Quiz"],
+    tagTypes:["User","Quiz","Group","assignGroup"],
     endpoints:(build) =>({
         getFormInfo:build.query({
             query:() => "form",
@@ -29,6 +29,26 @@ export const api = createApi({
                 body:data,
                 invalidatesTags:["Quiz"]
             })
+        }),
+        getGroupInfo:build.query({
+            query:()=>"groups",
+            providesTags:["Group"]
+        }),
+        postGroupInfo:build.mutation({
+            query:(data) =>({
+                url:"/groups",
+                method:"POST",
+                body:data,
+                invalidatesTags:["Group"]
+            })
+        }),
+        postAssignGroup:build.mutation({
+            query:(data) =>({
+                url:"/assignGroup",
+                method:"POST",
+                body:data,
+                invalidatesTags:["assignGroup"]
+            })
         })
     })
 })
@@ -38,4 +58,7 @@ export const {
     , usePostFormInfoMutation
     , useGetQuestionQuery
     , usePostQuestionMutation
+    , useGetGroupInfoQuery
+    , usePostGroupInfoMutation
+    , usePostAssignGroupMutation
 } = api

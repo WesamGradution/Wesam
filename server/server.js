@@ -5,6 +5,8 @@ import cors from "cors"
 
 import formRouter from "./routes/form.js";
 import quizRouter from "./routes/quiz.js"
+import groupsRouter from "./routes/groups.js"
+import assignGroup from "./routes/assignGroup.js"
 import helmet from "helmet";
 import morgan from "morgan";
 
@@ -21,6 +23,8 @@ app.use(cors())
 // ROUTES
 app.use("/form",formRouter)
 app.use("/quiz",quizRouter)
+app.use("/groups",groupsRouter)
+app.use("/assignGroup",assignGroup)
 
 //const CONNECTION_URL = "mongodb+srv://Wesam:xWkIvv6Un1HyCneG@cluster0.sawbkon.mongodb.net/?retryWrites=true&w=majority"
 const CONNECTION_URL = "mongodb://localhost:27017/UsersData"
