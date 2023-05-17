@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useRef,useEffect } from 'react'
 import { Box,Button,MenuItem,Select,useTheme,InputLabel } from '@mui/material'
 import { useGetFormInfoQuery, useGetGroupInfoQuery, usePostAssignGroupMutation } from '../../../../reduxToolKit/api'
 import {DataGrid} from "@mui/x-data-grid"
@@ -13,6 +13,10 @@ export const AddToGroup = () => {
   const [groupId,setGroupId] = useState('')
   const [selectedUser,setSelectedUser] = useState([])
   const [postAssignGroup] = usePostAssignGroupMutation()
+
+  const dataGridRef = useRef(null)
+
+  
  
 
     const handleSubmit = async () => {
@@ -24,18 +28,26 @@ export const AddToGroup = () => {
       
       setSelectedUser(selected)
 
+      setRowSelectionModel([])
+      console.log('Selection cleared');
+
       try {
         const response = await postAssignGroup(assignUser);
+
+        
         
       } catch (error) {
-        
+        console.log(error)
       }
+      
       
     };
 
     const handleChange = (e) =>{
         setGroupId(e.target.value)
     }
+
+    
 
    
 
@@ -45,7 +57,7 @@ export const AddToGroup = () => {
   }
    console.log("🚀 ~ file: index.js:38 ~ AddToGroup ~ assignUser:", assignUser)
 
-  
+  const isValid = rowSelectionModel.length > 0 && groupId !== '' ;
     
   
    
@@ -118,12 +130,14 @@ export const AddToGroup = () => {
           loading={isLoading_form || !data_form}
           getRowId={(row) => row._id}
           rows={data_form || []}
+          ref={dataGridRef}
           columns={columns}
           checkboxSelection
           onRowSelectionModelChange={(newRowSelectionModel) => {
           setRowSelectionModel(newRowSelectionModel);
         }}
         rowSelectionModel={rowSelectionModel}
+        
         />
       </Box>
 
@@ -144,7 +158,7 @@ export const AddToGroup = () => {
         </Select>
       </Box>
       <Box display="flex" justifyContent="end" m="10px">
-        <Button type='submit' color='secondary' variant='contained' onClick={handleSubmit}>
+        <Button type='submit' color='secondary' variant='contained' onClick={handleSubmit} disabled={!isValid}>
           add users to the group
         </Button>
       </Box>

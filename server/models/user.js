@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-
+import Group from "./groups.js";
 const userSchema = new mongoose.Schema({
     admin:Boolean,
     firstName :String,
@@ -25,6 +25,6 @@ userSchema.pre('save', function(next) {
     next();
   });
 
-const signUpForm = mongoose.model("User",userSchema)
+const User = mongoose.model("User",userSchema)
 
-export default signUpForm;
+export default User;

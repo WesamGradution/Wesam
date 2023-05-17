@@ -8,6 +8,6 @@ const groupSchema = new mongoose.Schema({
     members: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}] // Reference the User model
 })
 
-const groups = mongoose.model("Group",groupSchema)
+const Group = mongoose.model("Group",groupSchema)
 
-export default groups;
+export default Group;
