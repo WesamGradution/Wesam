@@ -30,6 +30,8 @@ import Axios from "axios";
 import he from 'he';
 
 function Quiz(props) {
+  const [userPoints, setUserPoints] = useState(0)
+
     /**
    * The user's current score.
    * @type {number|null}
@@ -122,6 +124,7 @@ function Quiz(props) {
  */
   const fetchDataFromObject = (questionObject) => {
     const fetchedData = questionObject.map((element) => {
+      const points = element.points? element.points : 0
       const question = he.decode(element.question);
       const correctAnswer = he.decode(element.correct_answer);
       const wrongAnswers = Object.values(element.incorrect_answers).map((str) => he.decode(str));
@@ -129,7 +132,8 @@ function Quiz(props) {
       return {
         question: question,
         answerOptions: answerOptions,
-        correctAnswer: correctAnswer 
+        correctAnswer: correctAnswer,
+        points: points
       };
     })
     setQuestionsData(fetchedData); 
@@ -166,10 +170,14 @@ function Quiz(props) {
   /**
  * Calculates the user's score based on their selected answers and the correct answers in `questionsData`.
  * If the `selectedAnswers` array includes a `null` value, an alert is shown to remind the user to answer all questions.
- * Otherwise, the user's score is calculated by comparing their selected answers to the correct answers in `questionsData`.
+ * Otherwise, the user's score and points are calculated by comparing their selected answers to the correct answers in `questionsData`.
  *
  */
-  const getResult = () => {
+  const getResult = () => { 
+    if (selectedAnswers.includes(null)) {
+      alert("Please answer all questions.");
+      return;
+    }
     const score = questionsData.reduce((accumulator, question, index) => {
       if (selectedAnswers[index] === question.correctAnswer) {
         return accumulator + 1;
@@ -178,9 +186,19 @@ function Quiz(props) {
       }
     }, 0);
     setUserScore(score);
-    setTimeLeft(0)
-    // HERE WE SHOULD BE STORING INTORMATION TO MONGODB DATABASE
-  }
+    setTimeLeft(0);
+  
+    // Calculate total points earned by the user
+    const totalPoints = questionsData.reduce((accumulator, question, index) => {
+      if (selectedAnswers[index] === question.correctAnswer) {
+        return accumulator + question.points;
+      } else {
+        return accumulator;
+      }
+    }, 0);
+    setUserPoints(totalPoints)
+    // HERE WE SHOULD BE STORING INFORMATION TO MONGODB DATABASE
+  };
 
   /**
  * Handles changes to the selected answer for a given question.
@@ -209,7 +227,7 @@ function Quiz(props) {
     if (userScore !== null){
       return (
         <div>
-          <p>You've completed the quiz with score {userScore}/{questionsNumber}</p>
+          <p>You've completed the quiz with score: {userScore}/{questionsNumber} and points: {userPoints}</p>
           <button >home page</button>
         </div>
       )

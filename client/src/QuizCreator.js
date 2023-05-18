@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function QuizCreator() {
-  const [questions, setQuestions] = useState([{ question: "", correctAnswer: "", answers: ["", ""] }]);
+  const [questions, setQuestions] = useState([{ question: "", correctAnswer: "", answers: ["", ""], points: 1 }]);
   const [time, setTime] = useState(10);
   const [unlimitedTime, setUnlimitedTime] = useState(false);
 
@@ -20,6 +20,12 @@ function QuizCreator() {
   const handleAnswerChange = (questionIndex, answerIndex, event) => {
     const newQuestions = [...questions];
     newQuestions[questionIndex].answers[answerIndex] = event.target.value;
+    setQuestions(newQuestions);
+  };
+
+  const handlePointChange = (questionIndex, event) => {
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].points = parseInt(event.target.value);
     setQuestions(newQuestions);
   };
 
@@ -100,6 +106,7 @@ function QuizCreator() {
         question: question.question,
         correct_answer: correctAnswer,
         incorrect_answers: incorrectAnswers,
+        points: question.points
       };
     });
     console.log(formattedQuestions);
@@ -118,7 +125,6 @@ function QuizCreator() {
           disabled={unlimitedTime}
         />
       </label>
-      <br />
       <label>
         <input
           type="checkbox"
@@ -127,7 +133,6 @@ function QuizCreator() {
         />
         Unlimited Time
       </label>
-      <br />
       {questions.map((question, index) => (
         <div key={index}>
           <label>
@@ -168,6 +173,17 @@ function QuizCreator() {
           </button>
           <br />
           <label>
+            T/F Answers
+            <input
+              type="checkbox"
+              checked={
+                question.answers[0] === "True" && question.answers[1] === "False"
+              }
+              onChange={(event) => handleTrueFalseChange(index, event)}
+            />
+          </label>
+          <br />
+          <label>
             Correct Answer
             <select
               value={question.correctAnswer}
@@ -184,15 +200,16 @@ function QuizCreator() {
           </label>
           <br />
           <label>
-            T/F Answers
+            Points
             <input
-              type="checkbox"
-              checked={
-                question.answers[0] === "True" && question.answers[1] === "False"
-              }
-              onChange={(event) => handleTrueFalseChange(index, event)}
+              type="number"
+              value={question.points}
+              onChange={(event) => handlePointChange(index, event)}
+              min="1"
+              required
             />
           </label>
+          
           {questions.length > 1 && (
             <button type="button" onClick={() => removeQuestion(index)}>
               Remove Question
@@ -201,7 +218,7 @@ function QuizCreator() {
           <hr />
         </div>
       ))}
-      <button type="button" onClick={() => setQuestions([...questions, { question: "", correctAnswer: "", answers: ["", ""] }])}>
+      <button type="button" onClick={() => setQuestions([...questions, { question: "", correctAnswer: "", answers: ["", ""], points: 1 }])}>
         Add Question
       </button>
       <br />
@@ -210,4 +227,4 @@ function QuizCreator() {
   );
 }
 
-export default QuizCreator; 
+export default QuizCreator;
