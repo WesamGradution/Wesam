@@ -9,14 +9,27 @@ export const postAssignGroup = async (req,res) => {
         console.log(error)
     }
 
+    
+
     const post = req.body;
   
     const {selected_users,group} = post
   
-    const selected_user_ids = selected_users.map(user => new mongoose.Types.ObjectId(user));
+    const valid_users = selected_users.filter(user => mongoose.Types.ObjectId.isValid(user));
+    const selected_user_ids = valid_users.map(user => new mongoose.Types.ObjectId(user));
     console.log("🚀 ~ file: assignGroup.js:11 ~ postAssignGroup ~ selected_user_ids:", selected_user_ids)
-    const group_id = new mongoose.Types.ObjectId(group);
-    console.log("🚀 ~ file: assignGroup.js:13 ~ postAssignGroup ~ group_id:", group_id)
+    
+    let group_id;
+    if (mongoose.Types.ObjectId.isValid(group)) {
+         group_id = new mongoose.Types.ObjectId(group);
+         console.log("🚀 ~ file: assignGroup.js:25 ~ postAssignGroup ~ group_id:", group_id)
+        
+      } else {
+        console.log("Invalid group string"); // Invalid group string
+      }
+    
+    //const group_id = new mongoose.Types.ObjectId(group);
+    //console.log("🚀 ~ file: assignGroup.js:13 ~ postAssignGroup ~ group_id:", group_id)
     
   
     //update User collection
@@ -25,7 +38,7 @@ export const postAssignGroup = async (req,res) => {
       await User.updateMany({ _id: { $in: selected_user_ids } }, { $addToSet: { groups: group_id } }, { new: true }).populate("groups").exec();
       // use await to wait for the find method to finish
       const users = await User.find({ _id: { $in: selected_user_ids } }).populate("groups").exec();
-      console.log(JSON.stringify(users, null, 2))
+      //console.log(JSON.stringify(users, null, 2))
     } catch (err) {
       handleError(err); // handle error
     }
@@ -38,7 +51,7 @@ export const postAssignGroup = async (req,res) => {
       await Group.findByIdAndUpdate(group_id, { $addToSet: { members: { $each: selected_user_ids } } }, { new: true }).populate(['admins', 'members']).exec();
       // use await to wait for the findById method to finish
       const group = await Group.findById(group_id).populate(['admins', 'members']).exec();
-      console.log(group);
+      //console.log(group);
     } catch (err) {
       handleError(err); // handle error
     }

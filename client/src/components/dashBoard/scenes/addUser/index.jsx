@@ -23,7 +23,7 @@ export const AddUser = () => {
   
   }
 
-  const handelFileUpload = () =>{
+  const handelFileUpload =   () =>{
     // Get the file from the ref
     const file = fileInputRef.current.files[0];
     //console.log(file)
@@ -34,7 +34,7 @@ export const AddUser = () => {
       const reader = new FileReader();
   
       // Define a callback function for when the file is loaded
-      reader.onload = () => {
+      reader.onload = async () => {
         // Get the file content as a string
         const csvString = reader.result;
   
@@ -80,7 +80,12 @@ export const AddUser = () => {
               errors.push(row);
             } else {
               // Insert this row into the database and add the keys and values to the data structures
-              postFormInfo(row)
+
+              try{
+
+                await userSchema.validate(row);
+
+                postFormInfo(row)
                 .unwrap()
                 .then((response) => {
                   // Handle the response
@@ -93,6 +98,12 @@ export const AddUser = () => {
               names.set(nameKey, row);
               emails.set(emailKey, row);
               phoneNumbers.add(phoneNumberValue);
+              }catch (validationError) {
+                // Handle the validation error
+                console.error(validationError);
+                errors.push(row);
+              }
+              
             }
           }
   

@@ -15,7 +15,7 @@ export const getFormInfo = async (req,res) => {
 
 export const postFormInfo = async (req,res) => {
     const post =  req.body;
-    console.log(post)
+    //console.log(post)
 
     const newpost = new signUpForm(post)
     
