@@ -15,11 +15,11 @@ export const AddUser = () => {
 
   
 
-  const handelFormSubmit = (values) => {
+  const handelFormSubmit = (values,{resetForm}) => {
     console.log('🚀 ~ file: index.jsx:11 ~ handelFormSubmit ~ values:',values);
     
     postFormInfo(values)
-
+    resetForm()
   
   }
 

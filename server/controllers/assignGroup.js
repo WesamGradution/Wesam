@@ -28,8 +28,7 @@ export const postAssignGroup = async (req,res) => {
         console.log("Invalid group string"); // Invalid group string
       }
     
-    //const group_id = new mongoose.Types.ObjectId(group);
-    //console.log("🚀 ~ file: assignGroup.js:13 ~ postAssignGroup ~ group_id:", group_id)
+    
     
   
     //update User collection

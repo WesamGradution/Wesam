@@ -4,7 +4,7 @@ import {createApi,fetchBaseQuery} from "@reduxjs/toolkit/query/react"
 export const api = createApi({
     baseQuery:fetchBaseQuery({baseUrl:"http://localhost:5000/"}),
     reducerPath:"adminApi",
-    tagTypes:["User","Quiz","Group","assignGroup"],
+    tagTypes:["User","Quiz","Group","assignGroup","opportunity","Store","transaction"],
     endpoints:(build) =>({
         getFormInfo:build.query({
             query:() => "form",
@@ -49,9 +49,45 @@ export const api = createApi({
                 body:data,
                 invalidatesTags:["assignGroup"]
             })
-        })
+        }),
+        getOpportunityInfo:build.query({
+            query:()=> "opportunity",
+            providesTags:["opportunity"]
+        }),
+        postOpportunityInfo:build.mutation({
+            query:(data) =>({
+                url:"/opportunity",
+                method:"POST",
+                body:data,
+                invalidatesTags:["opportunity"]
+            })
+    }),
+        getStoreInfo:build.query({
+            query:()=> "store",
+            providesTags:["Store"]
+        }),
+        postStoreInfo:build.mutation({
+            query:(data) =>({
+                url:"/store",
+                method:"POST",
+                body:data,
+                invalidatesTags:["Store"]
+            })
+    }),
+        getTransaction:build.query({
+            query:()=> "transaction",
+            providesTags:["transaction"]
+        }),
+        postTransaction:build.mutation({
+            query:(data) =>({
+                url:"/transaction",
+                method:"POST",
+                body:data,
+                invalidatesTags:["transaction"]
+            })
     })
-})
+        
+})})
 
 export const {
       useGetFormInfoQuery
@@ -61,4 +97,10 @@ export const {
     , useGetGroupInfoQuery
     , usePostGroupInfoMutation
     , usePostAssignGroupMutation
+    , useGetOpportunityInfoQuery
+    , usePostOpportunityInfoMutation
+    , useGetStoreInfoQuery
+    , usePostStoreInfoMutation
+    , useGetTransactionQuery
+    , usePostTransactionMutation
 } = api

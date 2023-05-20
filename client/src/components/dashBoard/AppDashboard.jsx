@@ -12,6 +12,12 @@ import { AddUser } from './scenes/addUser'
 import QuizCreator from "./scenes/quizCreator"
 import CreateGroup from './scenes/groups'
 import AddToGroup from './scenes/assignToGroup'
+import Opportunity from './scenes/opportunity'
+import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
+import AddProduct from './scenes/addProducts'
+import Product from './scenes/products'
+import Transaction from './scenes/transaction'
+
 const AppDashboard = () => {
     const mode = useSelector((state) => state.global.mode)
     const theme = useMemo(() => createTheme(themeSettings(mode)),[mode])
@@ -19,7 +25,8 @@ const AppDashboard = () => {
 
     <div>
         <ThemeProvider theme={theme}>
-            <CssBaseline/>
+        <ScopedCssBaseline>
+        <CssBaseline/>
             <Routes>
               <Route element = {<Layout/>}>
               <Route path="/dashboard" element={<Dashboard/>}></Route>
@@ -28,8 +35,13 @@ const AppDashboard = () => {
               <Route path='Add Quiz' element={<QuizCreator/>}></Route>
               <Route path='create group' element={<CreateGroup/>}></Route>
               <Route path='assign users' element={<AddToGroup/>}></Route>
+              <Route path='Add Opportunity' element={<Opportunity/>}></Route>
+              <Route path='add product' element={<AddProduct/>}></Route>
+              <Route path='show product' element={<Product/>}></Route>
+              <Route path='Manage Transactions' element={<Transaction/>}></Route>
               </Route>
             </Routes>
+            </ScopedCssBaseline>
         </ThemeProvider>
     </div>
   )

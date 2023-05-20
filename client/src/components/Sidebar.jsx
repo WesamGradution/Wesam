@@ -16,6 +16,8 @@ import { ChevronLeft, ChevronRightOutlined,  Groups2Outlined, HomeOutlined, Rece
 
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import GroupIcon from '@mui/icons-material/Group';
+import MessageIcon from '@mui/icons-material/Message';
+import AddIcon from '@mui/icons-material/Add';
 const Sidebar = ({
     drawerWidth,
     isSidebarOpen,
@@ -65,15 +67,37 @@ const Sidebar = ({
           text:"Add Quiz",
           icon:<Quiz/>
         },
+        {
+          text:"Opportunity",
+          icon:null
+        },
+        {
+          
+          text:"Add Opportunity",
+          icon:<MessageIcon/>
+        },
+        {
+          text:"Transactions",
+          icon:null
+        },
 
         {
-            text:"Transactions",
+            text:"Manage Transactions",
             icon:<ReceiptLongOutlined/>
         },
         {
-            text:"Product",
+          text:"Store",
+          icon:null
+        },
+        {
+            text:"Show Product",
             icon:<ShoppingCartOutlined/>
         },
+        {
+          text:"Add Product",
+          icon:<AddIcon/>
+      },
+      
         
         
     ]

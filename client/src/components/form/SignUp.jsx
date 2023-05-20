@@ -1,78 +1,77 @@
-import React, { useEffect, useState } from "react";
-import styles from "./form.module.css"
-import { useGetFormInfoQuery,usePostFormInfoMutation } from "../../reduxToolKit/api";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import * as React from 'react';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Navbar from '../Navbar';
 
-function SignUp() {
-    const[formInfo,setFormInfo] = useState({
-        username:"",
-        email: "",
-        password: ""
-    });
-
-    const [errorText,setErrorText] = useState("")
-    
-
-    const navigate = useNavigate()
-
-    const dispatch = useDispatch();
-
-    const {data, isLoading, isSuccess} = useGetFormInfoQuery()
-    const [postFormInfo] = usePostFormInfoMutation()
-
-    console.log(data)
-
-    const handelForm = (e) =>{
-        e.preventDefault()
-        
-        if (isLoading) {
-          // show loading indicator
-        } else if (isSuccess) {
-          // check data
-          data.forEach((form) =>{
-                    
-            if (formInfo.username === form.username){
-              setErrorText("user name already taken")
-            }else if (formInfo.email === form.email){
-              setErrorText("the email aleady taken")
-            }else{
-              console.log("work")
-              setErrorText("")
-              postFormInfo(formInfo)
-              naviHome() // trigger mutation
-            }
-          })
-        }
-         
+export default function MediaCard() {
+  // An array of card data
+  const cards = [
+    {
+      title: "Lizard",
+      image: "https://cdn.mos.cms.futurecdn.net/6AxBGxrtbSAkmhLmtdvGLX-1200-80.jpg",
+      description: "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"
+    },
+    {
+      title: "Elephant",
+      image: "https://iso.500px.com/wp-content/uploads/2014/08/2048-5.jpg",
+      description: "Elephants are mammals of the family Elephantidae and the largest existing land animals."
+    },
+    {
+      title: "Panda",
+      image: "https://img.freepik.com/premium-photo/cute-humorous-baby-panda-hanging-from-bamboo_410516-25873.jpg?w=2000",
+      description: "The giant panda, also known as the panda bear or simply the panda, is a bear native to south central China."
+    },
+    {
+      title: "Flamingo",
+      image: "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/320036721/1800",
+      description: "Flamingos or flamingoes are a type of wading bird in the family Phoenicopteridae, the only bird family in the order Phoenicopteriformes."
+    },
+    {
+      title: "Tiger",
+      image: "https://media.4-paws.org/5/4/4/c/544c2b2fd37541596134734c42bf77186f0df0ae/VIER%20PFOTEN_2017-10-20_164-3854x2667-1920x1329.jpg",
+      description: "The tiger is the largest living cat species and a member of the genus Panthera. It is most recognisable for its dark vertical stripes on orange-brown fur with a lighter underside."
+    },
+    {
+      title: "Penguin",
+      image: "https://www.cabq.gov/artsculture/biopark/news/10-cool-facts-about-penguins/@@images/1a36b305-412d-405e-a38b-0947ce6709ba.jpeg",
+      description: "Penguins are a group of aquatic, flightless birds. They live almost exclusively in the Southern Hemisphere, with only one species, the Galápagos penguin, found north of the equator."
     }
+  ];
+  const [isSidebarOpen,setIsSidebarOpen] = React.useState(true)
 
-    const naviHome = () => { setTimeout(() => { navigate("/home") },2000) }
+  return (
+    <Box>
+
+      <Navbar  
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+        />
     
-
-
-    return(
-        <div  >
-            
-                <div className={styles.container}>
-                    <h1 className={styles.container.h1}>Sign up </h1>
-                <form  onSubmit={handelForm} >
-
-                    <h1 className={styles.container.h1}> {errorText}</h1>
-                    <input name="email" placeholder="userName" value={formInfo.username} type ="text" required ="required" className={styles.input}
-                    onChange={(e) => setFormInfo({...formInfo,username:e.target.value})} />
-
-                    <input name="email" placeholder="email" value={formInfo.email} type ="email" required ="required" className={styles.input}
-                    onChange={(e) => setFormInfo({...formInfo,email:e.target.value})} />
-
-                    <input name="password" placeholder="password" value={formInfo.password}  type ="password" required="required" className={styles.input}
-                    onChange={(e)=> setFormInfo({...formInfo,password:e.target.value})} ></input>
-                    <button className={styles.button}>Submit</button>
-                </form>
-            </div>
-        
-      </div>
-    )
+    
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+      {/* Map over the card data and render each card */}
+      {cards.map((card) => (
+        <Card sx={{ maxWidth: 345, margin: 20 }}>
+          <CardMedia
+            component="img"
+            height="140"
+            image={card.image}
+            alt={card.title}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {card.title}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {card.description}
+            </Typography>
+          </CardContent>
+        </Card>
+      ))}
+    </Box>
+    </Box>
+  );
 }
-
-export default SignUp;
