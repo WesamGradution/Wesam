@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
     password:{type:String,require:true},
     signUpDate: {type:Date,default:Date.now},
     points:{type:Number,default:0,min:0},
-    groups:[{type: mongoose.Schema.Types.ObjectId, ref: 'Group'}]
+    groups:[{type: mongoose.Schema.Types.ObjectId, ref: 'Group'}],
+    id_updated_user:mongoose.Schema.Types.ObjectId
     
     
 })

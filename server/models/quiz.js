@@ -4,7 +4,8 @@ const quizSchema = new mongoose.Schema({
     
     question:String,
     correct_answer:String,
-    incorrect_answers:[]
+    incorrect_answers:[],
+    points:Number
 
 
 })

@@ -147,7 +147,7 @@ const Transaction = () => {
     </Box>
     <Box display="flex" justifyContent="end" m="10px">
     <Button type='submit' color='secondary' variant='contained' onClick={handleSubmit} disabled={!isValid}>
-    add users to the group
+    add point/s to user
     </Button>
     </Box>
     </Box>

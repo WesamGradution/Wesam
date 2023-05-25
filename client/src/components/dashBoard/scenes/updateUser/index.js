@@ -1,39 +1,29 @@
-import React , { useRef, useState,useEffect } from 'react'
-import { Box,Button,TextField,InputLabel,MenuItem,Select,Checkbox,FormGroup, FormControlLabel, Typography } from '@mui/material'
+import React , { useRef, useState } from 'react'
+import { Box,Button,TextField,InputLabel,MenuItem,Select,Checkbox,FormGroup, FormControlLabel } from '@mui/material'
 import {Formik} from "formik"
 import * as yup from "yup"
-import { usePostFormInfoMutation, useSignUpUserMutation } from '../../reduxToolKit/api'
-import { Global, css } from '@emotion/react';
-import styled from '@emotion/styled';
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-export const SignUp = () => {
+import useMediaQuery from '@mui/material/useMediaQuery'
+import Header from "../../../Header"
+import { useGetGroupInfoQuery, useUpdateFormMutation } from '../../../../reduxToolKit/api'
 
+const UpdateUser = () => {
   
-  const [postFormInfo] = usePostFormInfoMutation()
-  const [signUpUser] = useSignUpUserMutation()
-  const [errorMessage,setErrorMessage] = useState()
-  const navigate = useNavigate()
+  
+  const [updateUser] = useUpdateFormMutation()
+  
 
   
 
-  const handelFormSubmit = async (values,{resetForm}) => {
+  const handelFormSubmit = (values,{resetForm}) => {
     console.log('🚀 ~ file: index.jsx:11 ~ handelFormSubmit ~ values:',values);
     
-    //postFormInfo(values)
-    const result = await signUpUser(values)
-       
-        if (result.error){
-
-          setErrorMessage(result.error.data.message)
-        }else{
-          navigate('/home')
-        }
+    updateUser(values)
     resetForm()
   
   }
 
   
+
   
 
   const initialValues = {
@@ -43,6 +33,7 @@ export const SignUp = () => {
     email :"",
     phoneNumber :"",
     password:"",
+    id_updated_user:"",
   }
 
   const phoneNumberRegEx = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/
@@ -51,38 +42,15 @@ export const SignUp = () => {
     lastName:yup.string().required("required"),
     email:yup.string().email("invalid email").required("required"),
     phoneNumber:yup.string().matches(phoneNumberRegEx,"Phone number is not valid").required("required"),
-    password:yup.string().required("required")
+    password:yup.string().required("required"),
+    id_updated_user:yup.string().matches(/^[0-9a-fA-F]{24}$/, "Invalid mongodb id").required("required")
   })
 
-  useEffect(() => {
-    // set the style of the body element
-    document.body.style.fontFamily = "Source Sans Pro";
-    document.body.style.color = "white";
-    document.body.style.fontWeight = "300";
-    document.body.style.background = "#50a3a2";
-    document.body.style.width = "100%";
-    document.body.style.height = "100%";
-
-    // return a function to reset the style when the component unmounts
-    return () => {
-      document.body.style.fontFamily = null;
-      document.body.style.color = null;
-      document.body.style.fontWeight = null;
-      document.body.style.background = null;
-      document.body.style.width = null;
-      document.body.style.height = null;
-    };
-  }, []); 
-
-  
-
   return (
-  
-    
-    <Box m="200px">
+    <Box m="20px">
 
-    <Typography textAlign="center" variant='h3' m="40px" color="green">sign Up </Typography>
-    <Typography variant='h3'>{errorMessage}</Typography> 
+    <Header title="UPDATE USER" subtitle="Update User"></Header>    
+
     <Formik
     onSubmit={handelFormSubmit}
     initialValues={initialValues}
@@ -159,7 +127,36 @@ export const SignUp = () => {
             helperText={touched.phoneNumber && errors.phoneNumber}
             sx={{gridColumn:"span 2"}}
             />
-       
+            <TextField
+            fullWidth
+            variant = "filled"
+            type = "text"
+            label = "Write ID of Updated user"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.id_updated_user}
+            name="id_updated_user"
+            error={!!touched.id_updated_user && errors.id_updated_user }
+            helperText={touched.id_updated_user && errors.id_updated_user}
+            sx={{gridColumn:"span 2"}}
+            />
+            
+            <FormGroup >
+
+            <FormControlLabel control={<Checkbox 
+            checked={values.admin}  
+            onChange={handleChange}
+            name="admin"
+            />} label="Admin"></FormControlLabel>
+            </FormGroup>
+            
+            <Box display="flex" justifyContent="start"  sx={{flexDirection:"column"}} >
+            
+            
+
+            
+          
+          </Box>
           <Box display="flex" justifyContent="start">
           
           </Box>
@@ -170,7 +167,7 @@ export const SignUp = () => {
           
           
         <Box display="flex" justifyContent="end" mt="-20px">
-            <Button type='submit'  variant='contained' >
+            <Button type='submit' color='secondary' variant='contained' >
               Create New User
             </Button>
           </Box>
@@ -181,14 +178,11 @@ export const SignUp = () => {
         
       }}
     </Formik>
-
+     
 
 
     </Box>
-   
-    
   )
 }
-export default SignUp;
 
-
+export default UpdateUser

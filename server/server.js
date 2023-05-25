@@ -10,6 +10,7 @@ import assignGroup from "./routes/assignGroup.js"
 import apportunityRouter from "./routes/opportunity.js"
 import storeRouter from "./routes/store.js"
 import transactionRouter from "./routes/transaction.js"
+import joinGroupRouter from "./routes/joinGroup.js"
 import helmet from "helmet";
 import morgan from "morgan";
 
@@ -31,6 +32,9 @@ app.use("/assignGroup",assignGroup)
 app.use("/opportunity",apportunityRouter)
 app.use("/store",storeRouter)
 app.use("/transaction",transactionRouter)
+app.use("/joinGroup",joinGroupRouter)
+
+
 
 //const CONNECTION_URL = "mongodb+srv://Wesam:xWkIvv6Un1HyCneG@cluster0.sawbkon.mongodb.net/?retryWrites=true&w=majority"
 const CONNECTION_URL = "mongodb://localhost:27017/UsersData"

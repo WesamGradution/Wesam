@@ -18,6 +18,8 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import GroupIcon from '@mui/icons-material/Group';
 import MessageIcon from '@mui/icons-material/Message';
 import AddIcon from '@mui/icons-material/Add';
+import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
+import UpdateIcon from '@mui/icons-material/Update';
 const Sidebar = ({
     drawerWidth,
     isSidebarOpen,
@@ -45,6 +47,16 @@ const Sidebar = ({
         {
             text:"Add User",
             icon:<GroupAddIcon/>
+        },
+        ,
+        {
+            text:"Update User",
+            icon:<UpdateIcon/>
+        },
+        ,
+        {
+            text:"Delete User",
+            icon:<GroupRemoveIcon/>
         },
         {
           text:"Group",

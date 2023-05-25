@@ -1,24 +1,34 @@
 import React , { useRef, useState } from 'react'
-import { Box,Button,TextField,InputLabel,MenuItem,Select,Checkbox,FormGroup, FormControlLabel } from '@mui/material'
+import { Box,Button,TextField,InputLabel,MenuItem,Select,Checkbox,FormGroup, FormControlLabel, Typography } from '@mui/material'
 import {Formik} from "formik"
 import * as yup from "yup"
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Header from "../../../Header"
 import Papa from 'papaparse';
-import { usePostFormInfoMutation } from '../../../../reduxToolKit/api'
+import { usePostFormInfoMutation, useSignUpUserMutation } from '../../../../reduxToolKit/api'
 import { useGetGroupInfoQuery } from '../../../../reduxToolKit/api';
+import { useNavigate } from 'react-router-dom'
 export const AddUser = () => {
 
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [postFormInfo] = usePostFormInfoMutation()
+  const [signUp] = useSignUpUserMutation()
+  const [errorMessage,setErrorMessage] = useState()
+  const navigate = useNavigate()
   const fileInputRef = useRef();
 
   
 
-  const handelFormSubmit = (values,{resetForm}) => {
+  const handelFormSubmit = async (values,{resetForm}) => {
     console.log('🚀 ~ file: index.jsx:11 ~ handelFormSubmit ~ values:',values);
     
-    postFormInfo(values)
+    //postFormInfo(values)
+    const result = await signUp(values)
+       
+        if (result.error){
+
+          setErrorMessage(result.error.data.message)
+        }
     resetForm()
   
   }
@@ -152,7 +162,8 @@ export const AddUser = () => {
   return (
     <Box m="20px">
 
-    <Header title="CREATE USER" subtitle="Create a New User"></Header>    
+    <Header title="CREATE USER" subtitle="Create a New User"></Header> 
+    <Typography variant='h3'>{errorMessage}</Typography>   
 
     <Formik
     onSubmit={handelFormSubmit}

@@ -17,6 +17,8 @@ import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 import AddProduct from './scenes/addProducts'
 import Product from './scenes/products'
 import Transaction from './scenes/transaction'
+import UpdateUser from './scenes/updateUser'
+import DeleteUser from './scenes/deleteUser'
 
 const AppDashboard = () => {
     const mode = useSelector((state) => state.global.mode)
@@ -39,6 +41,8 @@ const AppDashboard = () => {
               <Route path='add product' element={<AddProduct/>}></Route>
               <Route path='show product' element={<Product/>}></Route>
               <Route path='Manage Transactions' element={<Transaction/>}></Route>
+              <Route path='Update User' element={<UpdateUser/>}></Route>
+              <Route path='Delete User' element={<DeleteUser/>}></Route>
               </Route>
             </Routes>
             </ScopedCssBaseline>

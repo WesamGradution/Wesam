@@ -1,26 +1,31 @@
-import React, { useState,useRef,useEffect } from 'react'
-import { Box,Button,MenuItem,Select,useTheme,InputLabel } from '@mui/material'
-import { useGetFormInfoQuery, useGetGroupInfoQuery, usePostAssignGroupMutation } from '../../../../reduxToolKit/api'
-import {DataGrid} from "@mui/x-data-grid"
+import React , { useRef, useState } from 'react'
+import { Box,useTheme,Button,TextField,InputLabel,MenuItem,Select,Checkbox,FormGroup, FormControlLabel } from '@mui/material'
+import {Formik} from "formik"
+import * as yup from "yup"
+import useMediaQuery from '@mui/material/useMediaQuery'
 import Header from "../../../Header"
+import {DataGrid} from "@mui/x-data-grid"
+import { useDeleteFormMutation,useGetFormInfoQuery } from '../../../../reduxToolKit/api'
 
-export const AddToGroup = () => {
+
+
+const DeleteUser = () => {
+    const [deleteUser] = useDeleteFormMutation()
     const theme = useTheme()
     const {data:data_form,isLoading:isLoading_form} = useGetFormInfoQuery()
-    const {data:data_group,isLoading:isLoading_group,isError:isError_group} = useGetGroupInfoQuery()
+    
 
     const [rowSelectionModel, setRowSelectionModel] = useState([]);
     const [groupId,setGroupId] = useState('')
     const [selectedUser,setSelectedUser] = useState([])
-    const [postAssignGroup] = usePostAssignGroupMutation()
+    
 
     // declare a state variable for assignUser and initialize it with empty arrays
-    const [assignUser, setAssignUser] = useState({selected_users: [], group: ""});
+   
 
  
    
 
-    const dataGridRef = useRef(null)
 
     
     
@@ -32,15 +37,16 @@ export const AddToGroup = () => {
     
     // get the ids from the selected rows
     const selected = selectedRows.map((row) => row._id);
-    
+    deleteUser(selected)
+    console.log(selected)
     
 
-    setAssignUser(async prev => {
+    {/*setAssignUser(async prev => {
     const newState = {...prev, selected_users: selected, group: groupId};
     console.log("new state:", newState);
     await postAssignGroup(newState)
     return newState;
-  });
+  });*/}
 
     setRowSelectionModel([])
 
@@ -48,15 +54,11 @@ export const AddToGroup = () => {
     
     };
 
-    const handleChange = (e) =>{
-    setGroupId(e.target.value)
     
-    
-    }
 
 
 
-    const isValid = rowSelectionModel.length > 0 && groupId !== '' ;
+    const isValid = rowSelectionModel.length > 0  ;
     
     
     
@@ -129,7 +131,6 @@ export const AddToGroup = () => {
     loading={isLoading_form || !data_form}
     getRowId={(row) => row._id}
     rows={data_form || []}
-    ref={dataGridRef}
     columns={columns}
     checkboxSelection
     onRowSelectionModelChange={(newRowSelectionModel) => {
@@ -140,29 +141,13 @@ export const AddToGroup = () => {
     />
     </Box>
 
-    <Box display="flex" justifyContent="start" m="10px">
-    <InputLabel id="demo-simple-select-label" sx={{ marginRight: 1 }}>Group Number :</InputLabel>
-    <Select
-    labelId="demo-simple-select-label"
-    id="demo-simple-select"
-    value={groupId}
-    label="Age"
-    onChange={handleChange}
-    variant="standard"
-    >
-    { data_group && data_group.map((data)=>{
-    return <MenuItem value={data._id}>{data.title}</MenuItem>;
-    })}
-
-    </Select>
-    </Box>
     <Box display="flex" justifyContent="end" m="10px">
     <Button type='submit' color='secondary' variant='contained' onClick={handleSubmit} disabled={!isValid}>
-    add users to the group
+    Delete User/s
     </Button>
     </Box>
     </Box>
     );
-    };
+}
 
-export default AddToGroup;
+export default DeleteUser

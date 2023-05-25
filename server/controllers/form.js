@@ -1,4 +1,5 @@
 import signUpForm from "../models/user.js"
+import session from "express-session"
 
 export const getFormInfo = async (req,res) => {
     try {
@@ -17,12 +18,14 @@ export const postFormInfo = async (req,res) => {
     const post =  req.body;
     //console.log(post)
 
-    const newpost = new signUpForm(post)
+    const newUser = new signUpForm(post)
     
     try {
-        await newpost.save()
+        var user = await newUser.save()
 
-        res.status(201).json(newpost)
+        req.session.userId = user._id
+
+        res.status(201).json(newUser)
     } catch (error) {
         if (error.code === 11000) {
             // duplicate key error
@@ -34,3 +37,27 @@ export const postFormInfo = async (req,res) => {
         }
         
     }
+
+
+    export const deleteForm = async (req, res) => {
+        const ids = req.body;
+        try {
+          await signUpForm.deleteMany({ _id: { $in: ids } });
+          res.status(200).json({ message: "Users deleted successfully" });
+        } catch (error) {
+          res.status(500).json({ message: error.message });
+        }
+      };
+
+export const updateForm = async (req,res) =>{
+    const data = req.body;
+    const id = data.id_updated_user;
+
+    try {
+        const updatedUser = await signUpForm.findByIdAndUpdate(id,data,{new:true,})
+        res.status(200).json(updatedUser)
+    } catch (error) {
+        res.status(500).json({message:error.message})
+    }
+}
+

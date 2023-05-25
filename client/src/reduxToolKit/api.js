@@ -1,10 +1,18 @@
 import {createApi,fetchBaseQuery} from "@reduxjs/toolkit/query/react"
-
+import { REHYDRATE } from 'redux-persist'
 
 export const api = createApi({
     baseQuery:fetchBaseQuery({baseUrl:"http://localhost:5000/"}),
     reducerPath:"adminApi",
-    tagTypes:["User","Quiz","Group","assignGroup","opportunity","Store","transaction"],
+    tagTypes:["User","Quiz","Group","assignGroup","opportunity","Store","transaction","joinGroup"],
+    extractRehydrationInfo(action, { reducerPath }) {
+        if (action.type === REHYDRATE) {
+          // check if action.payload is defined and has the adminApi property
+          if (action.payload && action.payload[reducerPath]) {
+            return action.payload[reducerPath]
+          }
+        }
+      },
     endpoints:(build) =>({
         getFormInfo:build.query({
             query:() => "form",
@@ -18,6 +26,23 @@ export const api = createApi({
                 invalidatesTags:["User"]
             })
         }),
+        deleteForm: build.mutation({
+            query: (ids) => ({
+              url: `/form`,
+              method: "DELETE",
+              body: ids,
+              invalidatesTags: ["User"]
+            })
+          }),
+          updateForm: build.mutation({
+            query: (data) => ({
+              url: `/form/${data.id}`,
+              method: "PUT",
+              body: data,
+              invalidatesTags: ["User"]
+            })
+          }),
+
         getQuestion:build.query({
             query:()=> "quiz",
             providesTags:["Quiz"]
@@ -31,7 +56,7 @@ export const api = createApi({
             })
         }),
         getGroupInfo:build.query({
-            query:()=>"groups",
+            query:(id)=> `groups/${id}`,
             providesTags:["Group"]
         }),
         postGroupInfo:build.mutation({
@@ -85,7 +110,23 @@ export const api = createApi({
                 body:data,
                 invalidatesTags:["transaction"]
             })
-    })
+    }), 
+        signUpUser:build.mutation({
+            query:(data) =>({
+            url:"/joinGroup/signUp",
+            method:"POST",
+            body:data,
+            invalidatesTags:["joinGroup"]
+            })
+    }),
+        signInUser:build.mutation({
+            query:(data) =>({
+            url:"/joinGroup/signIn",
+            method:"POST",
+            body:data,
+            invalidatesTags:["joinGroup"]
+            })
+}),
         
 })})
 
@@ -103,4 +144,8 @@ export const {
     , usePostStoreInfoMutation
     , useGetTransactionQuery
     , usePostTransactionMutation
+    , useDeleteFormMutation
+    , useUpdateFormMutation
+    , useSignUpUserMutation
+    , useSignInUserMutation
 } = api

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { usePostQuestionMutation } from "../../../../reduxToolKit/api";
 
 function QuizCreator() {
   const [questions, setQuestions] = useState([{ question: "", correctAnswer: "", answers: ["", ""], points: 1 }]);
   const [time, setTime] = useState(10);
   const [unlimitedTime, setUnlimitedTime] = useState(false);
+  const [postQuiz] = usePostQuestionMutation()
 
   const handleQuestionChange = (index, event) => {
     const newQuestions = [...questions];
@@ -109,6 +111,9 @@ function QuizCreator() {
         points: question.points
       };
     });
+    formattedQuestions.forEach((q)=>{
+      postQuiz(q)
+    })
     console.log(formattedQuestions);
     console.log("Time: ", time);
   };

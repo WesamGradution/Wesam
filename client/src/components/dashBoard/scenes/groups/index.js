@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react'
 import * as yup from "yup"
 import Header from '../../../Header'
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Button, TextField, Typography } from '@mui/material'
 import { Formik } from 'formik'
-import { usePostGroupInfoMutation } from '../../../../reduxToolKit/api'
+import { useGetGroupInfoQuery, usePostGroupInfoMutation } from '../../../../reduxToolKit/api'
 const CreateGroup = () => {
 
     const initialValues  = {
@@ -16,14 +16,39 @@ const CreateGroup = () => {
         description:yup.string().required("required")
     })
 
-    const [postGroupInfo] = usePostGroupInfoMutation()
+    const [postGroupInfo,{data}] = usePostGroupInfoMutation()
+    const [groupUrl,setGroupUrl] = useState("")
+    
+
 
     const handelFormSubmit = (values,{resetForm}) =>{
         console.log(values)
-        postGroupInfo(values)
+        postGroupInfo(values).then(data =>{
+
+            
+            if (!data) { 
+                console.log("whait") 
+        }else{
+            const {groupSchema,url} = data
+            setGroupUrl(data.data)
+            console.log('apollo', data.data);
+
+        }
+            
+            
+            
+        }).catch(error =>{
+            console.log(error)
+        })
 
         resetForm();
     }
+
+    
+   
+
+    
+    console.log(groupUrl)
 
   return (
     <Box m="20px">
@@ -72,6 +97,11 @@ const CreateGroup = () => {
                         <Button type='submit' color='secondary' variant='contained'>
                             Create New Group
                         </Button>
+                    </Box>
+                    <Box display="flex" justifyContent="start" m="20px">
+                        <Typography type='submit' color='secondary' variant='contained'>
+                            your url is : {groupUrl}
+                        </Typography>
                     </Box>
 
                 </form>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function QuizCreator() {
+function Home() {
   const [questions, setQuestions] = useState([]);
 
   const addQuestion = () => {
@@ -96,85 +96,10 @@ function QuizCreator() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {questions.map((question, index) => (
-        <div key={index}>
-          <label>
-            Question #{index + 1}
-            <input
-              type="text"
-              value={question.question}
-              onChange={(event) => handleQuestionChange(index, event)}
-              required
-            />
-          </label>
-          <br />
-          {question.answers.map((answer, answerIndex) => (
-            <div key={answerIndex}>
-              <label>
-                Answer #{answerIndex + 1}
-                <input
-                  type="text"
-                  value={answer}
-                  onChange={(event) =>
-                    handleAnswerChange(index, answerIndex, event)
-                  }
-                  required
-                />
-              </label>
-              {question.answers.length > 2 && (
-                <button
-                  type="button"
-                  onClick={() => removeAnswer(index, answerIndex)}
-                >
-                  Remove Answer
-                </button>
-              )}
-            </div>
-          ))}
-          <button type="button" onClick={() => addAnswer(index)}>
-            Add Answer
-          </button>
-          <br />
-          <label>
-            Correct Answer
-            <select
-              value={question.correctAnswer}
-              onChange={(event) => handleCorrectAnswerChange(index, event)}
-              required
-            >
-              <option value="">Select an answer</option>
-              {question.answers.map((answer, answerIndex) => (
-                <option key={answerIndex} value={answer}>
-                  {answer}
-                </option>
-              ))}
-            </select>
-          </label>
-          <br />
-          <label>
-            T/F Answers
-            <input
-              type="checkbox"
-              checked={question.answers[0] === "True" && question.answers[1] === "False"}
-              onChange={(event) => handleTrueFalseChange(index, event)}
-            />
-          </label>
-          {questions.length > 1 && (
-            <button type="button" onClick={() => removeQuestion(index)}>
-              Remove Question
-            </button>
-          )}
-          <hr />
-        </div>
-      ))}
-      <button type="button" onClick={addQuestion}>
-        Add Question
-      </button>
-      <br />
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      hello wesam
+    </div>
   );
 }
 
-export default QuizCreator;
+export default Home;
