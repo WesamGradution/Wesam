@@ -1,0 +1,197 @@
+PART 1: **MongoDB validators**
+PART 2: **notes**
+PART 3: **collections**
+PART 4: **creating query**
+
+
+PART 1: 
+**MongoDB validators**
+required: true,
+unique: true,
+match: /^[a-zA-Z0-9]{3,30}$/ (it means it contains letters and digits with length >= 3)
+min: 0, max: 120
+enum: ['male', 'female']
+validate (build ur own function)
+
+
+PART 2: 
+**notes**
+ _id is unique by default, generated automatically.
+any startDate is set to new Date() which is the current date.
+PLEASE REFER TO LUCID CHART
+
+
+
+
+
+PART 3: 
+**collections**
+
+-----------------------------------------------
+admins
+{
+    _id: ObjectId,
+    firstName: String,
+    lastName: String,
+    email: String,  //required & unique
+    phone: String,  //required & unique
+    password: String,  //required
+    signUpDate: Date, //default new Date()
+    groups: [ObjectId],  // default [empty]
+}
+-----------------------------------------------
+
+
+
+
+-----------------------------------------------
+users
+{
+    _id: ObjectId,
+    firstName: String,
+    lastName: String,
+    email: String,  //required & unique
+    phone: String,  //required & unique
+    password: String,  //required
+    signUpDate: Date, //default new Date()
+    points: NumberInt(),  //default 0, min=0
+    groups: [ObjectId],  // default [empty]
+}
+-----------------------------------------------
+
+
+
+
+-----------------------------------------------
+groups
+{
+	_id: ObjectId,
+	title: String,
+	description: String,
+	creationDate: Date,  //default new Date()
+	admins: [ObjectId],  // required **the creator is in index 0** 
+	members: [ObjectId],  //default [empty]
+}
+-----------------------------------------------
+
+
+
+
+-----------------------------------------------
+notifications
+{
+	_id: ObjectId,
+	group_id: ObjectId
+	sender_admin_id: ObjectId,
+	title: String,	
+	message: String,
+	sendDate: Date  //default new Date()
+}	
+-----------------------------------------------
+
+
+
+
+-----------------------------------------------
+competitions
+{
+	_id: ObjectId,
+	group_id: ObjectId,  //required
+	creator_id: ObjectId,  //required
+	title: String,
+	description: String,
+	startDate: Date,  //default new Date()
+	endTime: Date,
+	pointsAmount: NumberInt(),	  //default 0
+	timer: NumberInt(),  //default null
+
+	attempts:   //default [empty]
+		[ {
+		member_id: ObjectId,	
+		score: NumberInt(),
+		finishDate: Date	//default new Date()
+		} ]
+
+	quizData: 		//required
+		[ {
+		question: String,
+		correct_answer: String,
+		incorrect_answers: [Strings]
+		} ]
+	
+}
+-----------------------------------------------
+
+
+
+
+-----------------------------------------------
+-pointsTransaction
+{
+	_id: ObjectId
+	sender_admin_id: ObjectId, // not required
+	receiver_member_id: ObjectId, 	//required
+	pointsAmount: NumberInt(), 		//required
+	transactionDate: Date		//default new Date()
+}
+-----------------------------------------------
+
+
+
+
+-----------------------------------------------
+item
+{
+	_id: ObjectId,
+	admin_id: ObjectId,		//required
+	group_id: ObjectId, // not required
+	name: String,		//required
+	description: String,
+	quantity: int,		//required
+	pricePoints: int,		//required
+}
+-----------------------------------------------
+
+
+
+
+-----------------------------------------------
+order
+{
+	_id: ObjectId
+	item_id: ObjectId,		//required
+	member_id: ObjectId,		//required
+	quantity: int,		//required
+	totalAmount: int,		//required
+	orderDate: Date		//default new Date()
+}
+-----------------------------------------------
+
+
+
+
+
+-----------------------------------------------
+opportunity
+{
+	_id: ObjectId,
+	group_id: ObjectId,  // required
+	title: String,
+	description: String,
+	startDate: Date,  //default new Date()
+	endDate: Date,
+	pointsAmount: int,  //default 0
+	usersLimit: int,  // required
+	attempts:  //default [empty]
+		[ {
+		member_id: ObjectId
+		admin_conformation: boolean  //default false
+		} ]
+}
+-----------------------------------------------
+
+
+PART 4: 
+**creating query**
+
+write them here :)
