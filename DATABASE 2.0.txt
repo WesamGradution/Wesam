@@ -48,6 +48,7 @@ admins
 users
 {
     _id: ObjectId,
+    admin: Bolean,
     firstName: String,
     lastName: String,
     email: String,  //required & unique
