@@ -69,6 +69,7 @@ groups
 	_id: ObjectId,
 	title: String,
 	description: String,
+	link: String,
 	creationDate: Date,  //default new Date()
 	admins: [ObjectId],  // required **the creator is in index 0** 
 	members: [ObjectId],  //default [empty]
