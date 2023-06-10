@@ -5,7 +5,8 @@ const groupSchema = new mongoose.Schema({
     description: {type:String,require:true},
     creationDate: {type: Date, default: Date.now},
     admins: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}], // Reference the User model
-    members: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}] // Reference the User model
+    members: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}], // Reference the User model
+    url:String,
 })
 
 const Group = mongoose.model("Group",groupSchema)

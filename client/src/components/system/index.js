@@ -13,34 +13,21 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Header from "../../../Header";
+
 import Papa from "papaparse";
-import {
-  useGetAdminGroupQuery,
-  usePostFormInfoMutation,
-  useSignUpUserMutation,
-} from "../../../../reduxToolKit/api";
-import { useGetGroupInfoQuery } from "../../../../reduxToolKit/api";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../../../reduxToolKit/userSlice";
+import { useGetAllGroupInfoQuery, useSignUpUserMutation } from "../../reduxToolKit/api";
+import Header from "../Header";
 
-export const AddUser = () => {
-  // get the admin group
-  const { _id, admin } = useSelector(selectUser);
-  console.log("🚀 ~ file: index.jsx:33 ~ AddUser ~ admin:", admin);
 
-  const {
-    data: data_group,
-    isLoading: isLoading_group,
-    isError: isError_group,
-  } = useGetAdminGroupQuery(_id);
+export const System = () => {
 
-  const [postFormInfo] = usePostFormInfoMutation();
+
+  const {data,isLoadin,isError} = useGetAllGroupInfoQuery
+
+  
   const [signUp] = useSignUpUserMutation();
   const [errorMessage, setErrorMessage] = useState();
-  const [groupId, setGroupId] = useState([]);
+  
   const fileInputRef = useRef();
 
   const handelFormSubmit = async (values, { resetForm }) => {
@@ -51,9 +38,8 @@ export const AddUser = () => {
 
     if (result.error) {
       setErrorMessage(result.error.data.message);
-    } else {
-      resetForm();
     }
+    resetForm();
   };
 
   const handelFileUpload = () => {
@@ -168,6 +154,8 @@ export const AddUser = () => {
     }
   };
 
+
+
   const initialValues = {
     admin: false,
     firstName: "",
@@ -175,28 +163,22 @@ export const AddUser = () => {
     email: "",
     phoneNumber: "",
     password: "",
-    groups: [],
+    groups:[],
   };
 
   const phoneNumberRegEx =
     /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
-
+  const regex = /\\d+/;
   const userSchema = yup.object().shape({
-    firstName: yup
-      .string()
-      .matches(/^[A-Za-z]+$/, "Please write letter only")
-      .required("required"),
-    lastName: yup
-      .string()
-      .matches(/^[A-Za-z]+$/, "Please write letter only")
-      .required("required"),
+    firstName: yup.string().required("required"),
+    lastName: yup.string().required("required"),
     email: yup.string().email("invalid email").required("required"),
     phoneNumber: yup
       .string()
       .matches(phoneNumberRegEx, "Phone number is not valid")
       .required("required"),
     password: yup.string().required("required"),
-    groups: yup.array().of(yup.string()).required("required"),
+    groups: yup.array().of(yup.string()).required('required'),
   });
 
   return (
@@ -289,14 +271,27 @@ export const AddUser = () => {
                   helperText={touched.phoneNumber && errors.phoneNumber}
                   sx={{ gridColumn: "span 2" }}
                 />
-              </Box>
-
-              <Box display="flex" justifyContent="end" mt="30px">
                 
-                  <InputLabel id="group-select-label" sx={{ marginRight: 2,marginTop:1 }}>
-                    Group :
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={values.admin}
+                        onChange={handleChange}
+                        name="admin"
+                      />
+                    }
+                    label="Admin"
+                  ></FormControlLabel>
+                </FormGroup>
+                <Box display="flex" justifyContent="end" m="10px">
+                  <InputLabel
+                    id="group-select-label"
+                    sx={{ marginRight: 1 }}
+                  >
+                    Group Number :
                   </InputLabel>
-
+                  
                   <Select
                     labelId="group-select-label"
                     id="demo-simple-select"
@@ -309,30 +304,26 @@ export const AddUser = () => {
                     onChange={handleChange}
                     variant="standard"
                   >
-                    {data_group &&
-                      data_group.map((data) => {
+                    {data &&
+                      data.map((data) => {
                         return (
                           <MenuItem value={data._id}>{data.title}</MenuItem>
                         );
                       })}
                   </Select>
-                
-               
-                  <Button
-                    type="submit"
-                    color="secondary"
-                    variant="contained"
-                    sx={{ width: 160, height: 35,marginLeft:2 }}
-                  >
-                    Create New User
-                  </Button>
-                
+                </Box>
+              </Box>
+
+              <Box display="flex" justifyContent="end" mt="20px">
+                <Button type="submit" color="secondary" variant="contained">
+                  Create New User
+                </Button>
               </Box>
             </form>
           );
         }}
       </Formik>
-      <Box display="flex" justifyContent=" start" mt="-35px">
+      <Box display="flex" justifyContent=" start" mt="-30px">
         <input
           accept=".csv"
           ref={fileInputRef}
@@ -340,20 +331,18 @@ export const AddUser = () => {
           style={{ display: "none" }}
           id="file-input"
         />
-        <InputLabel htmlFor="file-input" sx={{padding:1}} >Upload CSV FILE</InputLabel>
-        <Box display="flex" justifyContent=" start" ml="10px">
+        <InputLabel htmlFor="file-input">
           <Button
             variant="contained"
             color="secondary"
             component="span"
-            sx={{ width: 160, height: 35 }}
             onClick={handelFileUpload}
           >
-            Upload
+            Upload CSV FILE
           </Button>
-        </Box>
+        </InputLabel>
       </Box>
     </Box>
   );
 };
-export default AddUser;
+export default System;

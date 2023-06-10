@@ -1,39 +1,48 @@
 import React, { useState } from 'react'
-import { useGetFormInfoQuery, usePostTransactionMutation } from '../../../../reduxToolKit/api';
+import { useGetAdminGroupQuery, useGetFormInfoQuery, usePostTransactionMutation } from '../../../../reduxToolKit/api';
 
-import { Box,Button,MenuItem,Select,useTheme,InputLabel } from '@mui/material'
+import { Box,Button,MenuItem,Select,useTheme,InputLabel, Typography } from '@mui/material'
 import {DataGrid} from "@mui/x-data-grid"
 import Header from '../../../Header';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser, updateUser } from '../../../../reduxToolKit/userSlice';
 const Transaction = () => {
 
     const theme = useTheme()
     const [assignUser, setAssignUser] = useState({receive_member_id: "", pointAmount: ""});
     const [points,setPoint] = useState("")
     const [rowSelectionModel, setRowSelectionModel] = useState([]);
-    const {data:data_form,isLoading:isLoading_form} = useGetFormInfoQuery()
+
+    const { _id } = useSelector(selectUser);
+    const {data:data_form,isLoading:isLoading_form,isError} = useGetAdminGroupQuery(_id)
+
+
+    
 
     const [postTransaction] = usePostTransactionMutation()
+
+    const user = useSelector(selectUser)
+    
+    const dispatch = useDispatch()
     
     const handleSubmit = async () => {
-        // get the selected rows from the data array
-        const selectedRows = data_form.filter((row) => rowSelectionModel.includes(row._id));
-        
-        // get the ids from the selected rows
-        const selected = selectedRows.map((row) => row._id);
-        
-        /*setAssignUser( prev => {
-            const newState = {...prev, group: groupId};
-            console.log("new state group:", newState);
-            
-            return newState;
-            });*/
+      const selectedRows = data_form.filter((row) => rowSelectionModel.includes(row._id));
+      console.log("🚀 ~ file: index.js:33 ~ handleSubmit ~ rowSelectionModel:", rowSelectionModel)
     
-        setAssignUser(async prev => {
-        const newState = {...prev, receive_member_id: selected, pointAmount: points};
-        console.log("new state:", newState);
-        await postTransaction(newState)
-        return newState;
-      });
+      
+ 
+      // get the ids from the selected rows
+      const selected = selectedRows.map((row) => row._id);
+      
+     
+      // create a new object with the selected ids and points
+      
+      const newState = {receive_member_id: rowSelectionModel, pointAmount: points};
+       
+      
+      
+      // call the postTransaction mutation with the new state
+      await postTransaction(newState)
     
         setRowSelectionModel([])
     
@@ -42,6 +51,13 @@ const Transaction = () => {
         };
         const handleChange = (e) =>{
             setPoint(e.target.value)
+        }
+
+        if (isError) {
+          return <Box alignItems="center" display="flex" justifyContent="center" height="80vh">
+          <Typography variant="h1">NO USERS</Typography>
+        </Box>;
+          
         }
 
     const columns = [
@@ -69,15 +85,16 @@ const Transaction = () => {
         headerName:"Phone Number",
         flex:0.5,
         },
-        {
-        field:"admin",
-        headerName:"Admin",
-        flex:0.5,
-        },
+        
         
         
         ];
         const isValid = rowSelectionModel.length > 0 && points !== '' ;
+
+        if (isLoading_form){
+          return <div>loading..</div>
+        }
+        const allMembers = data_form.flatMap((group) => group.members);
 
         let numbers = []
 
@@ -116,9 +133,9 @@ const Transaction = () => {
         }}
     >
     <DataGrid
-    loading={isLoading_form || !data_form}
+    loading={isLoading_form || !allMembers}
     getRowId={(row) => row._id}
-    rows={data_form || []}
+    rows={allMembers || []}
     columns={columns}
     checkboxSelection
     onRowSelectionModelChange={(newRowSelectionModel) => {
@@ -147,7 +164,7 @@ const Transaction = () => {
     </Box>
     <Box display="flex" justifyContent="end" m="10px">
     <Button type='submit' color='secondary' variant='contained' onClick={handleSubmit} disabled={!isValid}>
-    add point/s to user
+    add point/s to the group
     </Button>
     </Box>
     </Box>

@@ -4,17 +4,18 @@ import * as yup from "yup"
 import Header from '../../../Header';
 import { Box ,TextField,Button,InputLabel, Typography,MenuItem} from '@mui/material';
 import { Label } from '@mui/icons-material';
-import { useGetGroupInfoQuery, usePostStoreInfoMutation } from '../../../../reduxToolKit/api';
+import { useGetAllGroupInfoQuery, useGetGroupInfoQuery, usePostStoreInfoMutation } from '../../../../reduxToolKit/api';
 
 
 const AddProduct = () => {
-    const {data} = useGetGroupInfoQuery()
+    const {data} = useGetAllGroupInfoQuery()
     const [postItem] = usePostStoreInfoMutation()
 
-    const handleStoreSubmit = (values) =>{
+    const handleStoreSubmit = (values,{resetForm}) =>{
         
         console.log(values)
         postItem(values)
+        //resetForm()
 
     }
 

@@ -15,12 +15,18 @@ import userReducer from './reduxToolKit/userSlice';
 
 import { persistReducer, persistStore } from "redux-persist"; // import redux-persist functions
 import storage from "redux-persist/lib/storage"; // import default storage engine
+import sessionStorage from "redux-persist/lib/storage/session"; 
 import { PersistGate } from 'redux-persist/integration/react'; // import PersistGate
+
+
+ 
 
 const persistConfig = {
     key: "user", // key for the persisted user state
-    storage, // use default storage engine
+    storage: sessionStorage, // use default storage engine
   };
+
+  
   
 const persistedUserReducer = persistReducer(persistConfig, userReducer); // wrap userReducer with persistReducer
   
@@ -35,6 +41,9 @@ const persistedUserReducer = persistReducer(persistConfig, userReducer); // wrap
   });
 export const persistor = persistStore(store);
 setupListeners(store.dispatch);
+
+export const { dispatch } = store;
+
 
 //const store = createStore(reducers,compose(applyMiddleware(thunk)))
 

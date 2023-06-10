@@ -15,17 +15,14 @@ const userSchema = new mongoose.Schema({
     
 })
 
-// Add the pre-save hook here
-userSchema.pre('save', function(next) {
-    // Check if the signUpDate field is not set
-    if (!this.signUpDate) {
-      // Set it to the current date
-      this.signUpDate = new Date();
-    }
-    // Call the next middleware
-    next();
-  });
-
+userSchema.post('save', async function (doc) {
+  // Get the groups array from the user document
+  const groups = doc.groups;
+  // Loop through the groups array and update each group document using the $addToSet operator
+  for (const groupId of groups) {
+    await Group.findByIdAndUpdate(groupId, { $addToSet: { members: doc._id } });
+  }
+});
 const User = mongoose.model("User",userSchema)
 
 export default User;

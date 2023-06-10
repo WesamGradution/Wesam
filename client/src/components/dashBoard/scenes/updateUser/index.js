@@ -141,6 +141,7 @@ const UpdateUser = () => {
             sx={{gridColumn:"span 2"}}
             />
             
+            {/*
             <FormGroup >
 
             <FormControlLabel control={<Checkbox 
@@ -149,7 +150,7 @@ const UpdateUser = () => {
             name="admin"
             />} label="Admin"></FormControlLabel>
             </FormGroup>
-            
+             */}
             <Box display="flex" justifyContent="start"  sx={{flexDirection:"column"}} >
             
             
@@ -168,7 +169,7 @@ const UpdateUser = () => {
           
         <Box display="flex" justifyContent="end" mt="-20px">
             <Button type='submit' color='secondary' variant='contained' >
-              Create New User
+              Update User
             </Button>
           </Box>
           

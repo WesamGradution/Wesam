@@ -3,9 +3,6 @@ import { Box,Button,TextField,InputLabel,MenuItem,Select,Checkbox,FormGroup, For
 import {Formik} from "formik"
 import * as yup from "yup"
 import { usePostFormInfoMutation, useSignUpUserMutation } from '../../reduxToolKit/api'
-import { Global, css } from '@emotion/react';
-import styled from '@emotion/styled';
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 export const SignUp = () => {
 
@@ -27,9 +24,9 @@ export const SignUp = () => {
 
           setErrorMessage(result.error.data.message)
         }else{
-          navigate('/home')
+          navigate('/')
         }
-    resetForm()
+    
   
   }
 
@@ -44,15 +41,27 @@ export const SignUp = () => {
     phoneNumber :"",
     password:"",
   }
+  const phoneNumberRegEx =
+  /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
 
-  const phoneNumberRegEx = /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/
-  const userSchema = yup.object().shape({
-    firstName:yup.string().required("required"),
-    lastName:yup.string().required("required"),
-    email:yup.string().email("invalid email").required("required"),
-    phoneNumber:yup.string().matches(phoneNumberRegEx,"Phone number is not valid").required("required"),
-    password:yup.string().required("required")
-  })
+const userSchema = yup.object().shape({
+  firstName: yup
+    .string()
+    .matches(/^[A-Za-z]+$/, "Please write letter only")
+    .required("required"),
+  lastName: yup
+    .string()
+    .matches(/^[A-Za-z]+$/, "Please write letter only")
+    .required("required"),
+  email: yup.string().email("invalid email").required("required"),
+  phoneNumber: yup
+    .string()
+    .matches(phoneNumberRegEx, "Phone number is not valid")
+    .required("required"),
+  password: yup.string().required("required"),
+  groups: yup.array().of(yup.string()).required("required"),
+});
+ 
 
   useEffect(() => {
     // set the style of the body element
@@ -82,7 +91,7 @@ export const SignUp = () => {
     <Box m="200px">
 
     <Typography textAlign="center" variant='h3' m="40px" color="green">sign Up </Typography>
-    <Typography variant='h3'>{errorMessage}</Typography> 
+    <Typography variant='h4' textAlign="center" m="40px" color="red">{errorMessage}</Typography> 
     <Formik
     onSubmit={handelFormSubmit}
     initialValues={initialValues}

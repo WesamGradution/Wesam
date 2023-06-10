@@ -33,7 +33,7 @@ const Sidebar = ({
 
     const navItems = [
         {
-            text:"Dashboared",
+            text:"dashboard",
             icon:<HomeOutlined/>
         },
         {
@@ -41,23 +41,10 @@ const Sidebar = ({
             icon:null
         },
         {
-            text:"Show Users",
+            text:"Users Controller ",
             icon:<Groups2Outlined/>
         },
-        {
-            text:"Add User",
-            icon:<GroupAddIcon/>
-        },
         ,
-        {
-            text:"Update User",
-            icon:<UpdateIcon/>
-        },
-        ,
-        {
-            text:"Delete User",
-            icon:<GroupRemoveIcon/>
-        },
         {
           text:"Group",
           icon:null
@@ -86,6 +73,11 @@ const Sidebar = ({
         {
           
           text:"Add Opportunity",
+          icon:<MessageIcon/>
+        },
+        {
+          
+          text:"Show Opportunity",
           icon:<MessageIcon/>
         },
         {

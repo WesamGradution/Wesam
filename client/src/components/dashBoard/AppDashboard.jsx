@@ -19,6 +19,13 @@ import Product from './scenes/products'
 import Transaction from './scenes/transaction'
 import UpdateUser from './scenes/updateUser'
 import DeleteUser from './scenes/deleteUser'
+import GroupInformation from './scenes/groupInformation'
+import GroupComponent from '../groupComponent'
+import JoinGroup from '../joinGroup'
+import CustomeRoute from '../customeRoutre'
+import ShowOpprtunities from './scenes/showOpportunites'
+import OpportunuteMembers from './scenes/opportunutesMembers'
+import System from '../system'
 
 const AppDashboard = () => {
     const mode = useSelector((state) => state.global.mode)
@@ -26,27 +33,35 @@ const AppDashboard = () => {
   return (
 
     <div>
+    
         <ThemeProvider theme={theme}>
-        <ScopedCssBaseline>
         <CssBaseline/>
+        
             <Routes>
+
+            <Route path='/dashboard/createAdmin' element={<System/>}></Route>
+
               <Route element = {<Layout/>}>
-              <Route path="/dashboard" element={<Dashboard/>}></Route>
-              <Route path='show users' element={<Users/>}></Route>
-              <Route path="Add user" element={<AddUser/>}></Route>
-              <Route path='Add Quiz' element={<QuizCreator/>}></Route>
-              <Route path='create group' element={<CreateGroup/>}></Route>
-              <Route path='assign users' element={<AddToGroup/>}></Route>
-              <Route path='Add Opportunity' element={<Opportunity/>}></Route>
-              <Route path='add product' element={<AddProduct/>}></Route>
-              <Route path='show product' element={<Product/>}></Route>
-              <Route path='Manage Transactions' element={<Transaction/>}></Route>
-              <Route path='Update User' element={<UpdateUser/>}></Route>
-              <Route path='Delete User' element={<DeleteUser/>}></Route>
+              <Route path="dashboard" element={<CustomeRoute authorize={true} component={<Dashboard />} />} />
+              <Route path="users controller" element={<CustomeRoute authorize={true} component={<Users />} />} />
+              <Route path="Add user" element={<CustomeRoute authorize={true} component={<AddUser />} />} />
+              <Route path="Add Quiz" element={<CustomeRoute authorize={true} component={<QuizCreator />} />} />
+              <Route path="create group" element={<CustomeRoute authorize={true} component={<CreateGroup />} />} />
+              <Route path="assign users" element={<CustomeRoute authorize={true} component={<AddToGroup />} />} />
+              <Route path="Add Opportunity" element={<CustomeRoute authorize={true} component={<Opportunity />} />} />
+              <Route path="Show Opportunity" element={<CustomeRoute authorize={true} component={<ShowOpprtunities />} />} />
+              <Route path="add product" element={<CustomeRoute authorize={true} component={<AddProduct />} />} />
+              <Route path="show product" element={<CustomeRoute authorize={true} component={<Product />} />} />
+              <Route path="Manage Transactions" element={<CustomeRoute authorize={true} component={<Transaction />} />} />
+              <Route path="Update User" element={<CustomeRoute authorize={true} component={<UpdateUser />} />} />
+              <Route path="Delete User" element={<CustomeRoute authorize={true} component={<DeleteUser />} />} />
+              <Route path="/groups/information/:groupId" element={<CustomeRoute authorize={true} component={<GroupInformation />} />} />
+              <Route path="/opprtunities/information/:oppId" element={<CustomeRoute authorize={true} component={<OpportunuteMembers />} />} />
               </Route>
             </Routes>
-            </ScopedCssBaseline>
+            
         </ThemeProvider>
+     
     </div>
   )
 }

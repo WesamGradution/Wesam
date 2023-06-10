@@ -4,11 +4,13 @@ import {Formik} from "formik"
 import * as yup from "yup"
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Header from "../../../Header"
-import { useGetGroupInfoQuery, usePostOpportunityInfoMutation } from '../../../../reduxToolKit/api'
+import { useGetAdminGroupQuery, useGetGroupInfoQuery, usePostOpportunityInfoMutation } from '../../../../reduxToolKit/api'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../../../../reduxToolKit/userSlice'
 
 const Opportunity = () => {
-
-    const {data,isLoading} = useGetGroupInfoQuery()
+    const {_id} = useSelector(selectUser)
+    const {data} = useGetAdminGroupQuery(_id)
     const [postOpportunity] = usePostOpportunityInfoMutation()
 
     const handelFormSubmit = (values,{resetForm}) => {

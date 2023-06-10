@@ -1,105 +1,145 @@
-import React, { useState } from "react";
-
-function Home() {
-  const [questions, setQuestions] = useState([]);
-
-  const addQuestion = () => {
-    setQuestions([
-      ...questions,
-      { question: "", correctAnswer: "", answers: ["", ""] },
-    ]);
+import React from "react";
+import { Box, Grid, Typography, Card } from "@mui/material";
+import { motion } from "framer-motion";
+import "@fontsource/raleway/300.css";
+import "@fontsource/raleway/400.css";
+import "@fontsource/raleway/500.css";
+import "@fontsource/raleway/700.css";
+import { Navigate, useNavigate } from "react-router-dom";
+const HomePage = () => {
+  const navigate = useNavigate();
+  // Define some animation variants for the name and cards
+  const nameVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
   };
 
-  const handleQuestionChange = (index, event) => {
-    const newQuestions = [...questions];
-    newQuestions[index].question = event.target.value;
-    setQuestions(newQuestions);
+  const palmTreeVariants = {
+    hidden: { opacity: 0, scale: 0.5 },
+    visible: { opacity: 1, scale: 1 },
+    hover: { scale: 1.2, rotate: 10 },
+    tap: { scale: 0.8, rotate: -10, filter: "brightness(50%)" },
   };
 
-  const handleCorrectAnswerChange = (index, event) => {
-    const newQuestions = [...questions];
-    newQuestions[index].correctAnswer = event.target.value;
-    setQuestions(newQuestions);
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.5 },
+    visible: { opacity: 1, scale: 1 },
+    hover: { scale: 1.1 },
   };
 
-  const handleAnswerChange = (questionIndex, answerIndex, event) => {
-    const newQuestions = [...questions];
-    newQuestions[questionIndex].answers[answerIndex] = event.target.value;
-    setQuestions(newQuestions);
-  };
+  // Define some dummy data for the cards
+  const cards = [
+    {
+      title: "Notification",
+      description: "You can view all the notification from the admin here",
+    },
+    {
+      title: "Competetion",
+      description: "You can engane with the competetion and gain points",
+    },
+    {
+      title: "Opportunities",
+      description: "You can participate in opprotinity here",
+    },
+    {
+      title: "Store",
+      description: "You can use you point and buy items from here",
+    },
+  ];
 
-  const addAnswer = (questionIndex) => {
-    const newQuestions = [...questions];
-    newQuestions[questionIndex].answers.push("");
-    setQuestions(newQuestions);
-  };
+  const handleTransaction = (card) => {
+    switch (card.title) {
+      case "Notification":
+        navigate("/Notification");
+        break;
+      case "Competetion":
+        navigate("/Competetion");
+        break;
+      case "Opportunities":
+        navigate("/Opportunuties");
+        break;
+      case "Store":
+        navigate("/Store");
+        break;
 
-  const removeQuestion = (index) => {
-    const newQuestions = [...questions];
-    newQuestions.splice(index, 1);
-    setQuestions(newQuestions);
-  };
-
-  const removeAnswer = (questionIndex, answerIndex) => {
-    const newQuestions = [...questions];
-    newQuestions[questionIndex].answers.splice(answerIndex, 1);
-    setQuestions(newQuestions);
-  };
-
-  const handleTrueFalseChange = (questionIndex, event) => {
-    const newQuestions = [...questions];
-    const isChecked = event.target.checked;
-
-    if (isChecked) {
-      newQuestions[questionIndex].answers = ["True", "False"];
-    } else {
-      newQuestions[questionIndex].answers = ["", ""];
+      default:
+        break;
     }
-
-    setQuestions(newQuestions);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    // Check for duplicate questions
-    const questionTexts = questions.map((q) => q.question);
-    const uniqueQuestionTexts = new Set(questionTexts);
-    if (questionTexts.length !== uniqueQuestionTexts.size) {
-      alert("Each question must have a unique text");
-      return;
-    }
-
-    // Check for duplicate answers within each question
-    for (const question of questions) {
-      const answerTexts = question.answers;
-      const uniqueAnswerTexts = new Set(answerTexts);
-      if (answerTexts.length !== uniqueAnswerTexts.size) {
-        alert("Each answer in a question must be unique");
-        return;
-      }
-    }
-
-    // Format the quiz data
-    const formattedQuestions = questions.map((question) => {
-      const correctAnswer = question.correctAnswer;
-      const incorrectAnswers = question.answers.filter(
-        (answer) => answer !== correctAnswer
-      );
-      return {
-        question: question.question,
-        correct_answer: correctAnswer,
-        incorrect_answers: incorrectAnswers,
-      };
-    });
-    console.log(formattedQuestions);
   };
 
   return (
-    <div>
-      hello wesam
-    </div>
-  );
-}
+    <Box>
+      {/* The first section for the name and animation */}
+      <Box
+        sx={{
+          height: "50vh", // Half of the viewport height
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#3f8180",
+        }}
+      >
+        {/* Use motion component to animate the name */}
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={nameVariants}
+          transition={{ duration: 2 }}
+        >
+          <Typography variant="h1" sx={{ fontFamily: "Ralway" }}>
+            WESAM
+          </Typography>
+        </motion.div>
+        {/* Add your animation here */}
+        
+      </Box>
 
-export default Home;
+      {/* The second section for the cards */}
+      <Box
+        sx={{
+          height: "50vh", // Half of the viewport height
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {/* Use Grid component to create a grid of cards */}
+        <Grid container spacing={2}>
+          {cards.map((card) => (
+            <Grid item xs={6} sm={3} key={card.title}>
+              {/* Use motion component to animate the cards */}
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                whileHover="hover"
+                variants={cardVariants}
+                transition={{ type: "spring", stiffness: 20 }}
+              >
+                <Card
+                  sx={{
+                    height: 200,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "#3f8189",
+                  }}
+                  onClick={() => handleTransaction(card)}
+                >
+                  <Typography variant="h5" sx={{ color: "#fff" }}>
+                    {card.title}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: "#fff" }}>
+                    {card.description}
+                  </Typography>
+                </Card>
+              </motion.div>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </Box>
+  );
+};
+
+export default HomePage;

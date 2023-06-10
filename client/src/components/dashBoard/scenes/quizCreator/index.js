@@ -1,11 +1,31 @@
 import React, { useState } from "react";
-import { usePostQuestionMutation } from "../../../../reduxToolKit/api";
+import { useGetAdminGroupQuery, usePostQuestionMutation } from "../../../../reduxToolKit/api";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../../../reduxToolKit/userSlice";
+import { Box, InputLabel, MenuItem, Select } from "@mui/material";
 
 function QuizCreator() {
-  const [questions, setQuestions] = useState([{ question: "", correctAnswer: "", answers: ["", ""], points: 1 }]);
+  const [title, setTitle] = useState("");
+  const [description, setDiscription] = useState("");
+  const [questions, setQuestions] = useState([
+    { question: "", correctAnswer: "", answers: ["", ""], points: 1 },
+  ]);
   const [time, setTime] = useState(10);
   const [unlimitedTime, setUnlimitedTime] = useState(false);
-  const [postQuiz] = usePostQuestionMutation()
+  const [group_id,setGroup_id] = useState([])
+
+  // hook to send data
+  const [postQuiz] = usePostQuestionMutation();
+
+  // get the admin id
+  const { _id } = useSelector(selectUser);
+
+  // get admin group 
+  const {
+    data: data_group,
+    isLoading: isLoading_group,
+    isError: isError_group,
+  } = useGetAdminGroupQuery(_id);
 
   const handleQuestionChange = (index, event) => {
     const newQuestions = [...questions];
@@ -77,6 +97,10 @@ function QuizCreator() {
     }
   };
 
+  const handleChange = (e) =>{
+    setGroup_id(e.target.value)
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -99,6 +123,7 @@ function QuizCreator() {
     }
 
     // Format the quiz data
+
     const formattedQuestions = questions.map((question) => {
       const correctAnswer = question.correctAnswer;
       const incorrectAnswers = question.answers.filter(
@@ -108,18 +133,55 @@ function QuizCreator() {
         question: question.question,
         correct_answer: correctAnswer,
         incorrect_answers: incorrectAnswers,
-        points: question.points
+        points: question.points,
       };
     });
-    formattedQuestions.forEach((q)=>{
-      postQuiz(q)
-    })
     console.log(formattedQuestions);
     console.log("Time: ", time);
+    console.log("title: ", title);
+
+    const sendQuiz = {
+      group_id,
+      creator_id: _id,
+      title,
+      description,
+      timer:time,
+      quizData: formattedQuestions,
+    };
+
+    postQuiz(sendQuiz)
+    console.log("🚀 ~ file: index.js:146 ~ handleSubmit ~ sendQuiz:", sendQuiz);
+  };
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
+  const handleDiscriptionChange = (event) => {
+    setDiscription(event.target.value);
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <label>
+        Quiz Title:
+        <input
+          type="text"
+          value={title}
+          onChange={handleTitleChange}
+          required
+        />
+      </label>
+      <br />
+      <label>
+        description:
+        <input
+          type="text"
+          value={description}
+          onChange={handleDiscriptionChange}
+          required
+        />
+      </label>
+      <br />
       <label>
         Set Time (in minutes):
         <input
@@ -148,6 +210,18 @@ function QuizCreator() {
               onChange={(event) => handleQuestionChange(index, event)}
               required
             />
+            <br />
+            <label>
+              T/F Answers
+              <input
+                type="checkbox"
+                checked={
+                  question.answers[0] === "True" &&
+                  question.answers[1] === "False"
+                }
+                onChange={(event) => handleTrueFalseChange(index, event)}
+              />
+            </label>
           </label>
           <br />
           {question.answers.map((answer, answerIndex) => (
@@ -168,7 +242,7 @@ function QuizCreator() {
                   type="button"
                   onClick={() => removeAnswer(index, answerIndex)}
                 >
-                  Remove Answer
+                  X
                 </button>
               )}
             </div>
@@ -176,17 +250,7 @@ function QuizCreator() {
           <button type="button" onClick={() => addAnswer(index)}>
             Add Answer
           </button>
-          <br />
-          <label>
-            T/F Answers
-            <input
-              type="checkbox"
-              checked={
-                question.answers[0] === "True" && question.answers[1] === "False"
-              }
-              onChange={(event) => handleTrueFalseChange(index, event)}
-            />
-          </label>
+
           <br />
           <label>
             Correct Answer
@@ -210,11 +274,11 @@ function QuizCreator() {
               type="number"
               value={question.points}
               onChange={(event) => handlePointChange(index, event)}
-              min="1"
+              min="0"
               required
             />
           </label>
-          
+
           {questions.length > 1 && (
             <button type="button" onClick={() => removeQuestion(index)}>
               Remove Question
@@ -223,10 +287,45 @@ function QuizCreator() {
           <hr />
         </div>
       ))}
-      <button type="button" onClick={() => setQuestions([...questions, { question: "", correctAnswer: "", answers: ["", ""], points: 1 }])}>
+      <button
+        type="button"
+        onClick={() =>
+          setQuestions([
+            ...questions,
+            { question: "", correctAnswer: "", answers: ["", ""], points: 1 },
+          ])
+        }
+      >
         Add Question
       </button>
       <br />
+      <Box display="flex" justifyContent="end" mt="30px">
+                
+                <InputLabel id="group-select-label" sx={{ marginRight: 2,marginTop:1 }}>
+                  Group :
+                </InputLabel>
+
+                <Select
+                  labelId="group-select-label"
+                  id="demo-simple-select"
+                  name="group_id"
+                  multiple
+                  value={group_id}
+                  onChange={handleChange}
+                  variant="standard"
+                >
+                  {data_group &&
+                    data_group.map((data) => {
+                      return (
+                        <MenuItem value={data._id}>{data.title}</MenuItem>
+                      );
+                    })}
+                </Select>
+              
+             
+                
+              
+            </Box>
       <button type="submit">Submit</button>
     </form>
   );

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {useGetFormInfoQuery, useSignInUserMutation} from "../../reduxToolKit/api"
-import { Box } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, TextField, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../reduxToolKit/userSlice";
 function SignIn() {
@@ -27,7 +27,7 @@ function SignIn() {
     };
   }, []); 
 
-  const [signInUser,{isSuccess }] = useSignInUserMutation()
+  
   
 
     const[formInfo,setFormInfo] = useState({
@@ -36,16 +36,22 @@ function SignIn() {
     });
 
     const [errorMessage,setErrorMessage] = useState("")
+    const [signInUser,{isSuccess }] = useSignInUserMutation()
 
 
     
     const user = useSelector(selectUser)
-    
-    console.log(user)
-    
-    
-    
+    console.log("🚀 ~ file: SignIn.js:44 ~ SignIn ~ user:", user)
+    const location = useLocation()
     const navigate = useNavigate()
+
+    const {from } = location.state || {from :{pathname:"/home"}}
+    
+    
+    
+    
+    
+    
 
     const handelForm = async (e) => {
       e.preventDefault();
@@ -55,11 +61,18 @@ function SignIn() {
       if (result.error) {
         setErrorMessage(result.error.data.message);
       } else {
-        // wait for the promise to resolve
-        if (isSuccess){
-          console.log(user);
+
+        if(result.data.admin){
+          navigate("/dashboard")
+        }else{
+          navigate(from )
+
         }
-        // log the user value after the state has been updated
+        
+        
+        
+        
+        
         
       }
     };
@@ -68,22 +81,36 @@ function SignIn() {
 
     return(
         
-      <Box >
-            <h1 >Sign in </h1>
-            <p>{errorMessage}</p>
-          <form  onSubmit={handelForm}  >
-
-            <input name="email" placeholder="email" value={formInfo.email} 
-            onChange={(e) => setFormInfo({...formInfo,email:e.target.value})} />
-
-            <input name="password" placeholder="password" value={formInfo.password} type="password" 
-            onChange={(e)=> setFormInfo({...formInfo,password:e.target.value})} ></input>
-            <button c>Submit</button>
-            <br/>
-            <p>You don't have account? <Link to="/signUp">Sign up</Link> </p>
-        </form>
-          
+      <Box sx={{ margin: 40 }}>
+      <Typography variant="h3">Sign in</Typography>
+      <p>{errorMessage}</p>
+      <FormControl fullWidth>
+        
+        <TextField
+          name="email"
+          label="email"
+          value={formInfo.email}
+          onChange={(e) => setFormInfo({...formInfo, email: e.target.value})}
+        />
+      </FormControl>
+      <FormControl fullWidth>
+        
+        <TextField
+          name="password"
+          placeholder="password"
+          type="password"
+          value={formInfo.password}
+          onChange={(e) => setFormInfo({...formInfo, password: e.target.value})}
+        />
+      </FormControl>
+      <Box m="20px" display="flex" justifyContent="start">
+      <Button variant="contained" color="primary" onClick={handelForm} >
+        Submit
+      </Button>
       </Box>
+      <br />
+      <Typography variant="body1">You don't have account? <Link to="/signUp">Sign up</Link></Typography>
+    </Box>
       
     )
 }
