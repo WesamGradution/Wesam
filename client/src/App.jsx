@@ -23,17 +23,7 @@ import ShowQuizzes from "./components/competetion/showQuizzes";
 import ShowTheQuiz from "./components/competetion/showTheQuiz";
 
 function App() {
-  const {data, isLoading, isError} = useGetQuestionQuery();
- 
-  const user  = useSelector(selectUser)
-  
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
-  if (isError) {
-    return <div>Error!</div>;
-  }
 
   
   

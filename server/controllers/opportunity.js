@@ -58,7 +58,7 @@ export const getOpportunitiesUser = async (req,res) =>{
         const user = await User.findById(objectId);
 
         // Find and populate the opportunities that have the user's groups in their group_id array
-        const opportunities = await Opportunity.find({ group_id: { $in: user.groups } })
+        const opportunities = await Opportunity.find({ group_id: { $in: user.groups } }).populate("group_id")
         
 
         // Create a new object with only the fields you want from the first opportunity

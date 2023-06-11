@@ -26,6 +26,7 @@ import CustomeRoute from '../customeRoutre'
 import ShowOpprtunities from './scenes/showOpportunites'
 import OpportunuteMembers from './scenes/opportunutesMembers'
 import System from '../system'
+import ShowCompetition from './scenes/showCompetition'
 
 const AppDashboard = () => {
     const mode = useSelector((state) => state.global.mode)
@@ -45,9 +46,10 @@ const AppDashboard = () => {
               <Route path="dashboard" element={<CustomeRoute authorize={true} component={<Dashboard />} />} />
               <Route path="users controller" element={<CustomeRoute authorize={true} component={<Users />} />} />
               <Route path="Add user" element={<CustomeRoute authorize={true} component={<AddUser />} />} />
-              <Route path="Add Quiz" element={<CustomeRoute authorize={true} component={<QuizCreator />} />} />
+              <Route path="Add Competition" element={<CustomeRoute authorize={true} component={<QuizCreator />} />} />
+              <Route path="Show Competition" element={<CustomeRoute authorize={true} component={<ShowCompetition />} />} />
               <Route path="create group" element={<CustomeRoute authorize={true} component={<CreateGroup />} />} />
-              <Route path="assign users" element={<CustomeRoute authorize={true} component={<AddToGroup />} />} />
+              <Route path="Show Groups" element={<CustomeRoute authorize={true} component={<AddToGroup />} />} />
               <Route path="Add Opportunity" element={<CustomeRoute authorize={true} component={<Opportunity />} />} />
               <Route path="Show Opportunity" element={<CustomeRoute authorize={true} component={<ShowOpprtunities />} />} />
               <Route path="add product" element={<CustomeRoute authorize={true} component={<AddProduct />} />} />

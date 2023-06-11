@@ -21,6 +21,8 @@ const Opportunuties = () => {
   const { _id } = useSelector(selectUser);
 
   const { data, isLoading, isError } = useGetOpportunityUsersQuery(_id);
+ 
+  
   const[joinOpp,{isSuccess,error}] = usePostUserJoinOpportunityMutation()
   const [alert, setAlert] = useState(null);
 
@@ -29,6 +31,8 @@ const Opportunuties = () => {
   const [page, setPage] = useState(1);
   if (isLoading) return <div>loading ...</div>;
   else if (isError) return <div>error...</div>;
+
+  console.log("🚀 ~ file: index.js:24 ~ Opportunuties ~ data:", data.group_id)
 
   // Define how many items you want to show per page
   const itemsPerPage = 3;
@@ -75,7 +79,7 @@ const Opportunuties = () => {
     {alert && <Alert severity={alert.type}>{alert.message}</Alert>}
   </div>
       <Box className="data-container">
-        {currentItems.map((opportunity) => (
+        {currentItems.map((opportunity,index) => (
           <Box
             display="grid"
             alignItems="center"
@@ -118,6 +122,11 @@ const Opportunuties = () => {
                       {opportunity.description}
                     </Typography>
                     <Box mt="80px" display="grid" justifyContent="start">
+                    {opportunity.group_id.map(g => (
+                      <Typography mb="20px">
+                       Group: {g.title}
+                      </Typography>
+                      ))}
                       <Typography mb="20px">
                         User Limit: {opportunity.userLimit}
                       </Typography>

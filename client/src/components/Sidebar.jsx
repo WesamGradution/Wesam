@@ -54,7 +54,7 @@ const Sidebar = ({
           icon:<GroupIcon/>
         },
         {
-          text:"Assign Users",
+          text:"Show Groups",
           icon:<GroupAddIcon/>
         },
         {
@@ -63,7 +63,11 @@ const Sidebar = ({
         },
         
         {
-          text:"Add Quiz",
+          text:"Add Competition",
+          icon:<Quiz/>
+        },
+        {
+          text:"Show Competition",
           icon:<Quiz/>
         },
         {

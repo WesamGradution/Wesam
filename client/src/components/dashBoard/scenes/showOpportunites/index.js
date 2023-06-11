@@ -28,6 +28,7 @@ const ShowOpprtunities = () => {
 
     // hooks
     const {data,isLoading,isError} = useGetOpportunityInfoQuery(_id)
+    
     const [deleteOpportunities] = useDeleteOpportunitiesMutation()
     console.log("🚀 ~ file: index.js:26 ~ ShowOpprtunities ~ data:", data)
 
@@ -107,7 +108,7 @@ const ShowOpprtunities = () => {
             }
           };
 
-
+          
     return (
         <Box m="1.5rem 2.5rem">
           <CssBaseline />

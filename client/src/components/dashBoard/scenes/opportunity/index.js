@@ -30,7 +30,7 @@ const Opportunity = () => {
 
  
     const initialValues = {
-        group_id:"",
+        group_id:[],
         title :"",
         description :"",
         pointAmount :"",
@@ -139,6 +139,7 @@ const Opportunity = () => {
                     onChange={handleChange}
                     name="group_id"
                     variant="standard"
+                    multiple
                     sx={{gridAutoColumn:"span 1"}}
                     
                   >

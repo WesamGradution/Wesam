@@ -72,6 +72,10 @@ export const api = createApi({
         invalidatesTags: ["Quiz"],
       }),
     }),
+    getCompetitionForAdmin: build.query({
+      query: (adminId) => `quiz/admin/${adminId}`,
+      providesTags: ["Quiz"],
+    }),
     // show to user the group information when he want to join by the link
     getGroupInfo: build.query({
       query: (id) => `groups/groupLink/${id}`,
@@ -224,6 +228,7 @@ export const {
   useGetFormInfoQuery,
   usePostFormInfoMutation,
   useGetQuestionQuery,
+  useGetCompetitionForAdminQuery,
   usePostQuestionMutation,
   useGetQuizTitleDescriptionQuery,
   useGetQuizDataQuery,

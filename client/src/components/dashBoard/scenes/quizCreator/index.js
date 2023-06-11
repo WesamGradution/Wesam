@@ -299,7 +299,7 @@ function QuizCreator() {
         Add Question
       </button>
       <br />
-      <Box display="flex" justifyContent="end" mt="30px">
+      <Box display="flex" justifyContent="start" mt="30px">
                 
                 <InputLabel id="group-select-label" sx={{ marginRight: 2,marginTop:1 }}>
                   Group :
@@ -313,6 +313,7 @@ function QuizCreator() {
                   value={group_id}
                   onChange={handleChange}
                   variant="standard"
+                  required
                 >
                   {data_group &&
                     data_group.map((data) => {
@@ -323,10 +324,10 @@ function QuizCreator() {
                 </Select>
               
              
-                
+                <button type="submit">Submit</button>
               
             </Box>
-      <button type="submit">Submit</button>
+      
     </form>
   );
 }

@@ -60,6 +60,12 @@ const NavbarUser = () => {
     navigate("/")
 
   }
+  const goHome = ()=>{
+    
+   
+    navigate("/home")
+
+  }
 
 
      
@@ -84,7 +90,7 @@ const NavbarUser = () => {
         <Toolbar sx={{justifyContent:"space-between"}}>
         {/* LEFT SIDE */}
             <FlexBetween>
-                <Typography variant="h4" fontWeight="bold" sx={{fontFamily:"Ralway"}}> 
+                <Typography onClick={goHome} variant="h4" fontWeight="bold" sx={{fontFamily:"Ralway"}}> 
                         WESAM
                 </Typography>
                
