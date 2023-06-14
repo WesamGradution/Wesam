@@ -19,6 +19,7 @@ import {
   import { useNavigate } from "react-router-dom";
   import { useSelector } from "react-redux";
   import { selectUser } from "../../../../reduxToolKit/userSlice";
+import OpportunuteMembers from '../opportunutesMembers';
 
 const ShowOpprtunities = () => {
 
@@ -30,7 +31,7 @@ const ShowOpprtunities = () => {
     const {data,isLoading,isError} = useGetOpportunityInfoQuery(_id)
     
     const [deleteOpportunities] = useDeleteOpportunitiesMutation()
-    console.log("🚀 ~ file: index.js:26 ~ ShowOpprtunities ~ data:", data)
+    
 
     const navigate = useNavigate()
     const theme = useTheme();
@@ -39,8 +40,14 @@ const ShowOpprtunities = () => {
     if (isLoading){
         return <div>loading...</div>
     }else if (isError){
-        return <div>error..</div>
+      return <Box alignItems="center" display="flex" justifyContent="center" height="80vh">
+      <Typography variant="h1">Opps There is Some Error. Maybe You have don't have a group yet </Typography>
+    </Box>;
     }
+
+    console.log("🚀 ~ file: index.js:34 ~ ShowOpprtunities ~ data:", data)
+
+
 
     const columns = [
         {
@@ -68,6 +75,10 @@ const ShowOpprtunities = () => {
           headerName: "User Limit",
           flex: 0.5,
         },
+        
+        
+         
+      
       
       ];
 
@@ -113,7 +124,7 @@ const ShowOpprtunities = () => {
         <Box m="1.5rem 2.5rem">
           <CssBaseline />
     
-          <Header title="Users" subtitle="List of Users" />
+          <Header title="Oppotunites" subtitle="List of All opportunity you made " />
           <Box
             mt="40px"
             height="75vh"

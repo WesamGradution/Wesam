@@ -7,7 +7,8 @@ const opportunityShcema = new mongoose.Schema({
     startDate:{type:Date,default:Date.now},
     pointAmount:{type:Number,required:true},
     userLimit:{type:Number,required:true},
-    attemps:[{type:mongoose.Schema.Types.ObjectId,ref:"User"}]
+    attemps:[{type:mongoose.Schema.Types.ObjectId,ref:"User"}],
+    admins:[{type:mongoose.Schema.Types.ObjectId,ref:"User"}]
 
 })
 

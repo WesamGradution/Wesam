@@ -27,6 +27,8 @@ import ShowOpprtunities from './scenes/showOpportunites'
 import OpportunuteMembers from './scenes/opportunutesMembers'
 import System from '../system'
 import ShowCompetition from './scenes/showCompetition'
+import ShowQuizData from './scenes/showCompetition/showQuizDarta'
+import ShowTransaction from './scenes/transaction/showTransaction'
 
 const AppDashboard = () => {
     const mode = useSelector((state) => state.global.mode)
@@ -44,17 +46,19 @@ const AppDashboard = () => {
 
               <Route element = {<Layout/>}>
               <Route path="dashboard" element={<CustomeRoute authorize={true} component={<Dashboard />} />} />
-              <Route path="users controller" element={<CustomeRoute authorize={true} component={<Users />} />} />
+              <Route path="Users" element={<CustomeRoute authorize={true} component={<Users />} />} />
               <Route path="Add user" element={<CustomeRoute authorize={true} component={<AddUser />} />} />
               <Route path="Add Competition" element={<CustomeRoute authorize={true} component={<QuizCreator />} />} />
               <Route path="Show Competition" element={<CustomeRoute authorize={true} component={<ShowCompetition />} />} />
+              <Route path="Show quiz data" element={<CustomeRoute authorize={true} component={<ShowQuizData />} />} />
               <Route path="create group" element={<CustomeRoute authorize={true} component={<CreateGroup />} />} />
               <Route path="Show Groups" element={<CustomeRoute authorize={true} component={<AddToGroup />} />} />
               <Route path="Add Opportunity" element={<CustomeRoute authorize={true} component={<Opportunity />} />} />
               <Route path="Show Opportunity" element={<CustomeRoute authorize={true} component={<ShowOpprtunities />} />} />
               <Route path="add product" element={<CustomeRoute authorize={true} component={<AddProduct />} />} />
               <Route path="show product" element={<CustomeRoute authorize={true} component={<Product />} />} />
-              <Route path="Manage Transactions" element={<CustomeRoute authorize={true} component={<Transaction />} />} />
+              <Route path="Send Transactions" element={<CustomeRoute authorize={true} component={<Transaction />} />} />
+              <Route path="Show Transactions" element={<CustomeRoute authorize={true} component={<ShowTransaction />} />} />
               <Route path="Update User" element={<CustomeRoute authorize={true} component={<UpdateUser />} />} />
               <Route path="Delete User" element={<CustomeRoute authorize={true} component={<DeleteUser />} />} />
               <Route path="/groups/information/:groupId" element={<CustomeRoute authorize={true} component={<GroupInformation />} />} />

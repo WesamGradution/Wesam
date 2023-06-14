@@ -17,6 +17,12 @@ export const signUpUser = async (req, res) => {
       return res.status(400).json({ message: "Email already taken" });
     }
 
+    const existingPhoneNumber = await User.findOne({ phoneNumber });
+    if (existingPhoneNumber) {
+      // if the email exists, send back an error message
+      return res.status(400).json({ message: "phoneNumber already taken" });
+    }
+
     // hash the password using bcrypt
     //const hashedPassword = await bcrypt.hash(password, 10);
 

@@ -15,17 +15,21 @@ import {
 } from "../../../../reduxToolKit/api";
 import { DataGrid } from "@mui/x-data-grid";
 import Header from "../../../Header";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../../reduxToolKit/userSlice";
 
 export const Users = ({ data: membersData }) => {
 
   const { _id } = useSelector(selectUser);
+  const user = useSelector(selectUser)
+  console.log("🚀 ~ file: index.jsx:26 ~ Users ~ user:", user)
 
   const [deleteMembers] = useDeleteMembersMutation();
 
   const navigate = useNavigate();
+
+  const location = useLocation()
 
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
 
@@ -69,14 +73,18 @@ export const Users = ({ data: membersData }) => {
     return <div>loading...</div>;
   } else if (isError) {
     return <Box alignItems="center" display="flex" justifyContent="center" height="80vh">
-    <Typography variant="h1">YOU HAVE TO CREATE GROUP FIRST</Typography>
+    <Typography variant="h1">Opps There is Some Error </Typography>
   </Box>;
     
   }
   
+  
+  
+  
   const allMembers = data_group.flatMap((group) => group.members);
+  
 
-  const data = membersData || allMembers 
+  const data =   membersData || allMembers 
   
   
 
@@ -137,6 +145,7 @@ export const Users = ({ data: membersData }) => {
       <CssBaseline />
 
       <Header title="Users" subtitle="List of Users" />
+      {/*  
       <Box display="flex" justifyContent="end" m="10px">
         <Button
           type="submit"
@@ -147,6 +156,8 @@ export const Users = ({ data: membersData }) => {
           Update User
         </Button>
       </Box>
+
+      */}
       <Box
         mt="40px"
         height="75vh"

@@ -3,7 +3,7 @@ import { getFormInfo,postFormInfo,deleteForm,updateForm } from "../controllers/f
 
 const router = express.Router()
 
-router.get("/",getFormInfo)
+router.get("/:id",getFormInfo)
 router.post("/",postFormInfo)
 router.delete("/",deleteForm)
 router.put("/:id",updateForm)

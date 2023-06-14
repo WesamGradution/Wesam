@@ -21,6 +21,8 @@ import AnimatedCard from "./components/notificationn";
 import ShowGroup from "./components/competetion/showGroup";
 import ShowQuizzes from "./components/competetion/showQuizzes";
 import ShowTheQuiz from "./components/competetion/showTheQuiz";
+import System from "./components/system";
+import ShowGroupOpportunity from "./components/opportunuties/showGrops";
 
 function App() {
 
@@ -38,6 +40,7 @@ function App() {
           <Route path="/" exact element={<SignIn />}></Route>
           <Route path="/signUp" exact element={<SignUp/>}></Route>
           <Route path="/groups/join/:groupId" element={<JoinGroup/>}></Route>
+          <Route path="/createAdmin" element={<System/>}></Route>
 
           
         <Route element={<NavbarUser/>}>
@@ -47,7 +50,8 @@ function App() {
           <Route path="/Competetion" exact element={<ShowGroup  />}></Route>
           <Route path="/Competetion/:id" exact element={<ShowQuizzes/>}></Route>
           <Route path="/Competetion/:id/:quizId" exact element={<ShowTheQuiz/>}></Route>
-          <Route path="/Opportunuties" exact element={<Opportunuties/>}></Route>
+          <Route path="/Opportunuties" exact element={<ShowGroupOpportunity/>}></Route>
+          <Route path="/Opportunuties/:id" exact element={<Opportunuties/>}></Route>
           <Route path="/Store" exact element={<Store/>}></Route>
         </Route>
        

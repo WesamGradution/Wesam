@@ -9,7 +9,8 @@ import { selectUser, updateUser } from '../../../../reduxToolKit/userSlice';
 const Transaction = () => {
 
     const theme = useTheme()
-    const [assignUser, setAssignUser] = useState({receive_member_id: "", pointAmount: ""});
+    const user = useSelector(selectUser)
+    const [assignUser, setAssignUser] = useState({receive_member_id: "", pointAmount: "",admin:""});
     const [points,setPoint] = useState("")
     const [rowSelectionModel, setRowSelectionModel] = useState([]);
 
@@ -21,7 +22,7 @@ const Transaction = () => {
 
     const [postTransaction] = usePostTransactionMutation()
 
-    const user = useSelector(selectUser)
+    
     
     const dispatch = useDispatch()
     
@@ -37,7 +38,7 @@ const Transaction = () => {
      
       // create a new object with the selected ids and points
       
-      const newState = {receive_member_id: rowSelectionModel, pointAmount: points};
+      const newState = {receive_member_id: rowSelectionModel, pointAmount: points,admin:user._id};
        
       
       
@@ -98,12 +99,12 @@ const Transaction = () => {
 
         let numbers = []
 
-      for ( let i = 0; i <= 50; i++){
+      for ( let i = -50; i <= 50; i++){
         numbers.push(i)
       }
   return (
     <Box m="1.5rem 2.5rem">
-    <Header title="Users" subtitle="List of Users" />
+    <Header title="Transaction" subtitle="Here you can all members from your groups and can send them points" />
     <Box
         mt="40px"
         height="75vh"
@@ -164,7 +165,7 @@ const Transaction = () => {
     </Box>
     <Box display="flex" justifyContent="end" m="10px">
     <Button type='submit' color='secondary' variant='contained' onClick={handleSubmit} disabled={!isValid}>
-    add point/s to the group
+    add point/s to the user
     </Button>
     </Box>
     </Box>

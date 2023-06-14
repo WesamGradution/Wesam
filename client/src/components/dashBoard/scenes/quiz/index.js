@@ -38,7 +38,7 @@ function Quiz(props) {
   const [userPoints, setUserPoints] = useState(0)
   const [userScore, setUserScore] = useState(null)
   const {data} = useGetQuestionQuery()
-  console.log(data)
+  
   
   
 
@@ -51,6 +51,7 @@ function Quiz(props) {
  *
  * @type {int}*/
   const questionsNumber = props.dataBaseQuestions ? props.dataBaseQuestions.length : props.questionsNumber || 3
+ 
 
   /**
  * State variable that holds an array of object -question data-

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Grid, Typography, Card } from "@mui/material";
 import { motion } from "framer-motion";
 import "@fontsource/raleway/300.css";
@@ -6,8 +6,13 @@ import "@fontsource/raleway/400.css";
 import "@fontsource/raleway/500.css";
 import "@fontsource/raleway/700.css";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useGetFormInfoQuery } from '../../reduxToolKit/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser, updateUser } from '../../reduxToolKit/userSlice';
 const HomePage = () => {
   const navigate = useNavigate();
+
+  
   // Define some animation variants for the name and cards
   const nameVariants = {
     hidden: { opacity: 0 },

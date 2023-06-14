@@ -1,14 +1,15 @@
-import signUpForm from "../models/user.js";
+import User from "../models/user.js";
 import Group from "../models/groups.js";
 
 export const getFormInfo = async (req, res) => {
+  const {id} = req.params
   try {
-    const signUpInfo = await signUpForm.find();
+    const signUpInfo = await User.findById(id);
     //console.log(signUpInfo)
 
     res.status(200).json(signUpInfo);
   } catch (error) {
-    res.status(404).json({ message: "bla" });
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -35,7 +36,7 @@ export const postFormInfo = async (req, res) => {
 export const deleteForm = async (req, res) => {
   const ids = req.body;
   try {
-    await signUpForm.deleteMany({ _id: { $in: ids } });
+    await User.deleteMany({ _id: { $in: ids } });
     res.status(200).json({ message: "Users deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -47,7 +48,7 @@ export const updateForm = async (req, res) => {
   const id = data.id_updated_user;
 
   try {
-    const updatedUser = await signUpForm.findByIdAndUpdate(id, data, {
+    const updatedUser = await User.findByIdAndUpdate(id, data, {
       new: true,
     });
     res.status(200).json(updatedUser);

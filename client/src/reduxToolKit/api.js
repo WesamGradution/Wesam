@@ -24,7 +24,7 @@ export const api = createApi({
   },
   endpoints: (build) => ({
     getFormInfo: build.query({
-      query: () => "form",
+      query: (id) => `form/${id}`,
       providesTags: ["User"],
     }),
     postFormInfo: build.mutation({
@@ -57,17 +57,41 @@ export const api = createApi({
       providesTags: ["Quiz"],
     }),
     getQuizTitleDescription: build.query({
-      query: (id) => `quiz/${id}`,
+      query: ({ userId, groupId }) => `quiz/quizinfo/${userId}/${groupId}`,
       providesTags: ["Quiz"],
     }),
     getQuizData: build.query({
-      query: (id,quizId) => `quiz/${id}/${quizId}`,
+      query: (id,quizId) => `quiz/testdata/${id}/${quizId}`,
       providesTags: ["Quiz"],
+    }),
+    deleteQuiz: build.mutation({
+      query: (ids) => ({
+        url: `/quiz`,
+        method: "DELETE",
+        body: ids,
+        invalidatesTags: ["Quiz"],
+      }),
     }),
     postQuestion: build.mutation({
       query: (data) => ({
         url: "/quiz",
         method: "POST",
+        body: data,
+        invalidatesTags: ["Quiz"],
+      }),
+    }),
+    postUserScore: build.mutation({
+      query: ({userId,points,score}) => ({
+        url: "/quiz/finishQuiz",
+        method: "PATCH",
+        body: {userId,points,score},
+        invalidatesTags: ["Quiz"],
+      }),
+    }),
+    updatedQuizAttemps: build.mutation({
+      query: (data) => ({
+        url: `quiz/update/${data.userId}/${data.quizId}`,
+        method: "PUT",
         body: data,
         invalidatesTags: ["Quiz"],
       }),
@@ -110,6 +134,14 @@ export const api = createApi({
         method: "DELETE",
         body: usersId,
         adminId,
+        invalidatesTags: ["Group"],
+      }),
+    }),
+    postAddUserToGroupUsingNumber: build.mutation({
+      query: ({ phoneNumber, groupId }) => ({
+        url: "/groups/addToGroupNumber",
+        method: "POST",
+        body: { phoneNumber, groupId },
         invalidatesTags: ["Group"],
       }),
     }),
@@ -170,7 +202,11 @@ export const api = createApi({
         }),
       }),
     getStoreInfo: build.query({
-      query: () => "store",
+      query: (id) => `store/admin/${id}`,
+      providesTags: ["Store"],
+    }),
+    getUserProduct: build.query({
+      query: (id) => `store/user/${id}`,
       providesTags: ["Store"],
     }),
     getItemInfo: build.query({
@@ -187,6 +223,10 @@ export const api = createApi({
     }),
     getTransaction: build.query({
       query: () => "transaction",
+      providesTags: ["transaction"],
+    }),
+    getTransactionAdmin: build.query({
+      query: (id) => `transaction/${id}`,
       providesTags: ["transaction"],
     }),
     postTransaction: build.mutation({
@@ -230,14 +270,18 @@ export const {
   useGetQuestionQuery,
   useGetCompetitionForAdminQuery,
   usePostQuestionMutation,
+  usePostUserScoreMutation,
   useGetQuizTitleDescriptionQuery,
   useGetQuizDataQuery,
+  useDeleteQuizMutation,
+  useUpdatedQuizAttempsMutation,
   useGetGroupInfoQuery,
   useGetAdminGroupQuery,
   useGetAllGroupInfoQuery,
   useGetMembersOfGroupQuery,
   useDeleteGroupMutation,
   useDeleteMembersMutation,
+  usePostAddUserToGroupUsingNumberMutation,
   usePostGroupInfoMutation,
   usePostAssignGroupMutation,
   useGetOpportunityInfoQuery,
@@ -247,9 +291,11 @@ export const {
   usePostOpportunityInfoMutation,
   usePostUserJoinOpportunityMutation,
   useGetStoreInfoQuery,
+  useGetUserProductQuery,
   useGetItemInfoQuery,
   usePostStoreInfoMutation,
   useGetTransactionQuery,
+  useGetTransactionAdminQuery,
   usePostTransactionMutation,
   useDeleteFormMutation,
   useUpdateFormMutation,

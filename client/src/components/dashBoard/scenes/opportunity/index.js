@@ -35,6 +35,7 @@ const Opportunity = () => {
         description :"",
         pointAmount :"",
         userLimit :"",
+        admins:[_id]
       }
     
       

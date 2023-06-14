@@ -116,6 +116,8 @@ const CreateGroup = () => {
                 alignItems="center"
                 m="20px"
               >
+              {groupUrl && (
+                <>
                 <Typography color="secondary" variant="body1" mr="10px">
                   Your url is: {groupUrl}
                 </Typography>
@@ -127,6 +129,10 @@ const CreateGroup = () => {
                 >
                   Copy Url
                 </Button>
+                </>
+
+              )}
+              
               </Box>
 
               {copied && submitted && (

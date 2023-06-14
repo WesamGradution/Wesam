@@ -37,16 +37,16 @@ const Sidebar = ({
             icon:<HomeOutlined/>
         },
         {
-            text:"Users",
+            text:"Users Controller",
             icon:null
         },
         {
-            text:"Users Controller ",
+            text:"Users",
             icon:<Groups2Outlined/>
         },
         ,
         {
-          text:"Group",
+          text:"Group Controller",
           icon:null
         },
         {
@@ -58,7 +58,7 @@ const Sidebar = ({
           icon:<GroupAddIcon/>
         },
         {
-          text:"Quiz",
+          text:"Competition Controller",
           icon:null
         },
         
@@ -71,7 +71,7 @@ const Sidebar = ({
           icon:<Quiz/>
         },
         {
-          text:"Opportunity",
+          text:"Opportunity Controller",
           icon:null
         },
         {
@@ -85,14 +85,18 @@ const Sidebar = ({
           icon:<MessageIcon/>
         },
         {
-          text:"Transactions",
+          text:"Transactions Controller",
           icon:null
         },
 
         {
-            text:"Manage Transactions",
+            text:"Send Transactions",
             icon:<ReceiptLongOutlined/>
         },
+        {
+          text:"Show Transactions",
+          icon:<ReceiptLongOutlined/>
+      },
         {
           text:"Store",
           icon:null
@@ -116,6 +120,7 @@ const Sidebar = ({
 
   return (
     <Box component="nav">
+    
       {isSidebarOpen && (
         <Drawer
           open={isSidebarOpen} // if true the component is shown

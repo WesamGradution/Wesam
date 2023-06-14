@@ -13,6 +13,23 @@ export const getTransaction = async (req,res)=>{
     }
 }
 
+export const getTransactionForAdmin = async (req,res) =>{
+  const id = req.params.id
+  try {
+    const transactionInfo = await Transaction.find({admin:id}).populate([
+      { path: "admin", model: "User", select: "firstName lastName " },
+      { path: "receive_member_id", model: "User" , select: "firstName lastName email phoneNumber"},
+    ]);
+    //console.log(signUpInfo)
+
+    res.status(200).json(transactionInfo)
+} catch (error) {
+    res.status(404).json({message: error.message})
+    
+    
+}
+}
+
 
 export const postTransaction = async (req, res) => {
     const transaction = req.body;
@@ -23,7 +40,9 @@ export const postTransaction = async (req, res) => {
    
     try {
       await newTransaction.save();
-      const result = await User.updateOne({_id:transaction.receive_member_id },{$inc:{points:transaction.pointAmount}});
+      const result = await User.updateOne({_id:transaction.receive_member_id },
+        {$inc:{points:transaction.pointAmount}},
+        { runValidators: true });
       console.log("🚀 ~ file: transaction.js:27 ~ postTransaction ~ result:", result)
 
 

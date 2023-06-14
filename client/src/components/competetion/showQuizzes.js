@@ -1,12 +1,37 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetQuizTitleDescriptionQuery } from "../../reduxToolKit/api";
+import { useGetQuizTitleDescriptionQuery, useUpdatedQuizAttempsMutation } from "../../reduxToolKit/api";
 import { Box, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import QuizIcon from '@mui/icons-material/Quiz';
+import { useSelector } from "react-redux";
+import { selectUser } from "../../reduxToolKit/userSlice";
+import { useDispatch } from "react-redux";
+
 const ShowQuizzes = () => {
   const { id } = useParams();
+
+  const {groups,_id} = useSelector(selectUser)
+  console.log("🚀 ~ file: showQuizzes.js:12 ~ ShowQuizzes ~ _id:", _id)
+  const [updateAttemps, {isLoading: isUpdating}] = useUpdatedQuizAttempsMutation({
+    onSuccess: () => {
+      // Refetch the data after the mutation
+      refetch();
+    },
+  });
+
+ 
+
+  const groups_id = groups.map(group => group._id)
+  console.log("🚀 ~ file: showQuizzes.js:15 ~ ShowQuizzes ~ groups_id:", groups_id)
   
-  const { data, isLoading, isError } = useGetQuizTitleDescriptionQuery(id);
+  
+  const { data, isLoading, isError, refetch } = useGetQuizTitleDescriptionQuery({
+    userId: _id,
+    groupId: id,
+  });
+  
+
+
 
   // navigate
 
@@ -21,13 +46,13 @@ const ShowQuizzes = () => {
  
 
 
-  const handleTransaction = (q) => {
-    navigate(`${q.id}`)
-    
-    //console.log("🚀 ~ file: showQuizzes.js:27 ~ handleTransaction ~ q:", q.id)
-    
-    
-  };
+const handleTransaction = async (q) => {
+  console.log("🚀 ~ file: showQuizzes.js:39 ~ handleTransaction ~ q:", q.id);
+  await updateAttemps({ userId: _id, quizId: q.id });
+  // Pass some state to the navigate function
+  navigate(`${q.id}`, { state: { from: "/Competetion/:id" } });
+};
+
 
   return (
     <Box>

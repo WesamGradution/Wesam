@@ -29,18 +29,29 @@ import React, { useState, useEffect } from 'react';
 import Axios from "axios";
 import he from 'he';
 import { useNavigate } from 'react-router-dom';
+import { useGetFormInfoQuery, usePostUserScoreMutation } from '../../reduxToolKit/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser, updateUser } from '../../reduxToolKit/userSlice';
 
 
 function Competetion(props) {
   const [userPoints, setUserPoints] = useState(0)
   const [userScore, setUserScore] = useState(null)
 
+  const {_id} = useSelector(selectUser)
+
+  const dispatch = useDispatch()
+
+  const userId = _id
+
+  const [postScore] = usePostUserScoreMutation()
+
   const navigate = useNavigate()
 
 
 
   
-  
+    
  
 
     /**
@@ -192,14 +203,14 @@ function Competetion(props) {
       alert("Please answer all questions.");
       return;
     }
-    const score = questionsData.reduce((accumulator, question, index) => {
+    const score1 = questionsData.reduce((accumulator, question, index) => {
       if (selectedAnswers[index] === question.correctAnswer) {
         return accumulator + 1;
       } else {
         return accumulator;
       }
     }, 0);
-    setUserScore(score);
+    setUserScore(score1);
     setTimeLeft(0);
   
     // Calculate total points earned by the user
@@ -212,7 +223,14 @@ function Competetion(props) {
     }, 0);
     setUserPoints(totalPoints)
     // HERE WE SHOULD BE STORING INFORMATION TO MONGODB DATABASE
+
+      const points = userPoints
+      const score = userScore
+      postScore({userId,points,score})
+
+      
   };
+
 
   /**
  * Handles changes to the selected answer for a given question.
@@ -230,6 +248,10 @@ function Competetion(props) {
 
   const handleGoHome = () =>{
     navigate("/home")
+    window.location.reload();
+    //const {data} = useGetFormInfoQuery(userId)
+
+    //dispatch(updateUser(data))
   }
 
   /**
@@ -243,6 +265,7 @@ function Competetion(props) {
       return <p>Just a second...</p>
     }
     if (userScore !== null){
+      
       return (
         <div>
           <p>You've completed the quiz with score: {userScore}/{questionsNumber} and points: {userPoints}</p>
@@ -275,9 +298,11 @@ function Competetion(props) {
       </>
     );
   };
+
+  
     
   return (
-    <div className='Quiz'>
+    <div className='Quiz' style={{textAlign:"center"}}>
       {renderQA()}
     </div>
   );

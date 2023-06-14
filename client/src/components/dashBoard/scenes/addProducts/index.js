@@ -4,34 +4,41 @@ import * as yup from "yup"
 import Header from '../../../Header';
 import { Box ,TextField,Button,InputLabel, Typography,MenuItem} from '@mui/material';
 import { Label } from '@mui/icons-material';
-import { useGetAllGroupInfoQuery, useGetGroupInfoQuery, usePostStoreInfoMutation } from '../../../../reduxToolKit/api';
+import { useGetAdminGroupQuery, useGetAllGroupInfoQuery, useGetGroupInfoQuery, usePostStoreInfoMutation } from '../../../../reduxToolKit/api';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../../reduxToolKit/userSlice';
 
 
 const AddProduct = () => {
-    const {data} = useGetAllGroupInfoQuery()
+
+    const {_id} = useSelector(selectUser)
+    const {data} = useGetAdminGroupQuery(_id)
     const [postItem] = usePostStoreInfoMutation()
+   
+
 
     const handleStoreSubmit = (values,{resetForm}) =>{
         
         console.log(values)
         postItem(values)
-        //resetForm()
+        resetForm()
 
     }
 
 
     const initialValues = {
-        group_id:"",
+        group_id:[],
         name:"",
         description:"",
         quantity:"",
         pricePoint:"",
-        itemPicture:""
+        itemPicture:"",
+        admin:_id,
 
     }
 
     const storeSchema = yup.object().shape({
-        group_id:yup.string().required("required"),
+        group_id: yup.array().of(yup.string()).required("Please select at least one group"),
         name:yup.string().required("required"),
         description:yup.string().required("required"),
         quantity:yup.string().required("required"),
@@ -129,7 +136,9 @@ const AddProduct = () => {
              error={!!touched.group_id && errors.group_id }
              helperText={touched.group_id && errors.group_id}
              sx={{gridColumn:"span 1"}}
-             select 
+             select
+             SelectProps={{ multiple: true }}
+
                   
                 >
                 { data && data.map((d)=>{

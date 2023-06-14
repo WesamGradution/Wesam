@@ -145,12 +145,15 @@ function QuizCreator() {
       creator_id: _id,
       title,
       description,
-      timer:time,
+      timer:time == "unlimited" ? null : time,
       quizData: formattedQuestions,
     };
 
     postQuiz(sendQuiz)
     console.log("🚀 ~ file: index.js:146 ~ handleSubmit ~ sendQuiz:", sendQuiz);
+    setQuestions([{ question: "", correctAnswer: "", answers: ["", ""], points: 1 }]);
+    setTime(10);
+    setUnlimitedTime(false)
   };
 
   const handleTitleChange = (event) => {
@@ -161,7 +164,7 @@ function QuizCreator() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{alignContent:"center", alignItems:"c"}}>
       <label>
         Quiz Title:
         <input

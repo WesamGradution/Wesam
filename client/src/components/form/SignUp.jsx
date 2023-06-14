@@ -59,7 +59,7 @@ const userSchema = yup.object().shape({
     .matches(phoneNumberRegEx, "Phone number is not valid")
     .required("required"),
   password: yup.string().required("required"),
-  groups: yup.array().of(yup.string()).required("required"),
+  
 });
  
 

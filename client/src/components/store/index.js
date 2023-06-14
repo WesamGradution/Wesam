@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
     useGetItemInfoQuery,
   useGetStoreInfoQuery,
+  useGetUserProductQuery,
   usePostTransactionMutation,
 } from "../../reduxToolKit/api";
 import {
@@ -21,7 +22,10 @@ import Header from "../Header";
 
 
 const Store = () => {
-  const { data: storeData, isLoading, error } = useGetStoreInfoQuery();
+  const {_id} = useSelector(selectUser)
+  const { data: storeData, isLoading, error } = useGetUserProductQuery(_id);
+  console.log("🚀 ~ file: index.js:27 ~ Store ~ storeData:", storeData)
+  
   const user = useSelector(selectUser);
   const [orderMessage, setOrderMessage] = useState();
   const [postTransaction] = usePostTransactionMutation()
@@ -72,6 +76,7 @@ const Store = () => {
         return <div>error </div>
    }
 
+   console.log("🚀 ~ file: index.js:25 ~ Store ~ storeData:", storeData)
 
 
   return (

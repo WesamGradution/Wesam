@@ -7,6 +7,7 @@ const transactionShcema = new mongoose.Schema({
         ref: "User", 
       }],
     pointAmount:Number,
+    admin:[{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
     transactionDate: {type:Date,default:Date.now}
 })
 
@@ -22,6 +23,7 @@ transactionShcema.post("save",async function(doc, next){
     console.log(err) // pass error to next middleware
     }
    })*/}
+  
 const Transaction = mongoose.model("Transaction",transactionShcema)
 
 export default Transaction; 

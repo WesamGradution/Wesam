@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
     
 })
 
+
 userSchema.post('save', async function (doc) {
   // Get the groups array from the user document
   const groups = doc.groups;

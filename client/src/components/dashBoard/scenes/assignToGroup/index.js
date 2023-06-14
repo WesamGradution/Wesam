@@ -21,6 +21,7 @@ import Header from "../../../Header";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../../reduxToolKit/userSlice";
+import AddUserButton from "./addButton";
 
 export const AddToGroup = () => {
   const theme = useTheme();
@@ -35,6 +36,7 @@ export const AddToGroup = () => {
     isLoading: isLoading_group,
     isError: isError_group,
   } = useGetAdminGroupQuery(_id);
+    
 
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [groupId, setGroupId] = useState("");
@@ -65,10 +67,11 @@ export const AddToGroup = () => {
       </Box>
     );
   }
+  console.log("🚀 ~ file: index.js:38 ~ AddToGroup ~ data:", data_group)
 
   const allMembers = data_group.flatMap((group) => group.members);
 
-  console.log(allMembers);
+  
 
   {
     /* 
@@ -139,6 +142,20 @@ export const AddToGroup = () => {
       headerName: "Url",
       flex: 1,
     },
+    {
+      field: "addUser",
+      headerName: "Add User",
+      flex: 0.5,
+      // Use renderCell to customize the cell rendering
+      renderCell: (params) => {
+        // Get the group id and title from the params.value object
+        const groupId = params.row._id;
+        const groupTitle = params.row.title;
+        // Return the custom component with the group id and title as props
+        return <AddUserButton groupId={groupId} groupTitle={groupTitle} />;
+      },
+    },
+
   ];
 
   const handleCellClick = (params) => {

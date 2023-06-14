@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const groupSchema = new mongoose.Schema({
-    title: {type:String,require:true,unique:true},
+    title: {type:String,require:true},
     description: {type:String,require:true},
     creationDate: {type: Date, default: Date.now},
     admins: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}], // Reference the User model

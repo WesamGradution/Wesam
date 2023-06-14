@@ -15,12 +15,15 @@ import {
   Stack
 } from "@mui/material"; // Import the pagination components
 import { motion } from "framer-motion";
+import { useParams } from "react-router-dom";
 
 
 const Opportunuties = () => {
   const { _id } = useSelector(selectUser);
 
-  const { data, isLoading, isError } = useGetOpportunityUsersQuery(_id);
+  const {id} = useParams()
+
+  const { data, isLoading, isError } = useGetOpportunityUsersQuery(id);
  
   
   const[joinOpp,{isSuccess,error}] = usePostUserJoinOpportunityMutation()
@@ -32,7 +35,7 @@ const Opportunuties = () => {
   if (isLoading) return <div>loading ...</div>;
   else if (isError) return <div>error...</div>;
 
-  console.log("🚀 ~ file: index.js:24 ~ Opportunuties ~ data:", data.group_id)
+  console.log("🚀 ~ file: index.js:24 ~ Opportunuties ~ data:", data)
 
   // Define how many items you want to show per page
   const itemsPerPage = 3;
@@ -122,11 +125,7 @@ const Opportunuties = () => {
                       {opportunity.description}
                     </Typography>
                     <Box mt="80px" display="grid" justifyContent="start">
-                    {opportunity.group_id.map(g => (
-                      <Typography mb="20px">
-                       Group: {g.title}
-                      </Typography>
-                      ))}
+                    
                       <Typography mb="20px">
                         User Limit: {opportunity.userLimit}
                       </Typography>

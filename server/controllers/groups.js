@@ -1,5 +1,5 @@
 import groups from "../models/groups.js";
-
+import User from "../models/user.js";
 // return all the information of all the groups in the database
 export const getAllGroupInfo = async (req, res) => {
   try {
@@ -113,9 +113,9 @@ export const getGroupMembers = async (req, res) => {
       // find all the groups that have the admin id in the admins field and populate the members field with user information
       const group = await groups.find({admins: adminId}).populate('members');
   
-      // check if any groups are found
       if (!group || group.length === 0) {
-        return res.status(404).json({message: 'No groups found'});
+        // return a 200 status code and an empty array
+        return res.status(200).json([]);
       }
 
       
@@ -126,3 +126,51 @@ export const getGroupMembers = async (req, res) => {
       res.status(500).json({message: error.message});
     }
   };
+
+
+  export const postNumberOfUser = async (req,res) => {
+
+    try {
+      // Get the phone number and group id from the request body
+      const { phoneNumber, groupId } = req.body;
+  
+      // Find the user document with the phone number
+      const user = await User.findOneAndUpdate(
+        { phoneNumber },
+        { $addToSet: { groups: groupId } },
+        { new: true }
+      );
+  
+      // Check if the user exists
+      if (!user) {
+        // Return a 404 status code and a message if not
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      // Find the group document with the group id and update it using the $addToSet operator and return the updated document
+      const group = await groups.findByIdAndUpdate(
+        groupId,
+        { $addToSet: { members: user._id } },
+        { new: true }
+      );
+  
+      // Check if the group exists
+      if (!group) {
+        // Return a 404 status code and a message if not
+        return res.status(404).json({ message: "Group not found" });
+      }
+  
+      // Check if the user was already in the group
+      if (group.members.includes(user._id)) {
+        // Return a 400 status code and a message if yes
+        return res.status(400).json({ message: "User already in the group" });
+      }
+  
+      // Send the updated group document as a response
+      res.status(200).json(group);
+    } catch (error) {
+      // Handle any errors
+      res.status(500).json({ message: error.message });
+    }
+
+  }
