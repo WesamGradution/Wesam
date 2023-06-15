@@ -1,5 +1,6 @@
 import Transaction from "../models/transaction.js";
 import User from "../models/user.js";
+import Store from "../models/store.js";
 export const getTransaction = async (req,res)=>{
     try {
         const transactionInfo = await Transaction.find()
@@ -35,7 +36,8 @@ export const postTransaction = async (req, res) => {
     const transaction = req.body;
     console.log("🚀 ~ file: transaction.js:19 ~ postTransaction ~ transaction:", transaction)
    
-  
+    const itemdId = transaction.id
+    console.log("🚀 ~ file: transaction.js:40 ~ postTransaction ~ itemdId:", itemdId)
     const newTransaction = new Transaction(transaction);
    
     try {
@@ -44,6 +46,13 @@ export const postTransaction = async (req, res) => {
         {$inc:{points:transaction.pointAmount}},
         { runValidators: true });
       console.log("🚀 ~ file: transaction.js:27 ~ postTransaction ~ result:", result)
+
+
+      const updateItem = await Store.updateOne(
+        { _id: transaction.itemId },
+        { $inc: { quantity: -1 } }
+      );
+      console.log("🚀 ~ file: transaction.js:35 ~ postTransaction ~ updateItem:", updateItem);
 
 
        

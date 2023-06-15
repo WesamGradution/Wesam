@@ -248,7 +248,7 @@ function Competetion(props) {
 
   const handleGoHome = () =>{
     navigate("/home")
-    window.location.reload();
+    //window.location.reload();
     //const {data} = useGetFormInfoQuery(userId)
 
     //dispatch(updateUser(data))

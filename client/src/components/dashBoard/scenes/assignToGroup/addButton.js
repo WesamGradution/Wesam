@@ -43,14 +43,19 @@ function AddUserButton(props) {
   // Define a handler function for submitting the phone number
   const handleSubmit = async () => {
     // Do something with the phone number and group id here
-    await addUserToGroup({ phoneNumber, groupId });
-    console.log(
-      `Adding user with phone number ${phoneNumber} to group ${groupId}`
-    );
-    // Close the dialog
-    handleClose();
-    // Open the snackbar
-    setSnackbarOpen(true);
+    try {
+      await addUserToGroup({ phoneNumber, groupId });
+      console.log(
+        `Adding user with phone number ${phoneNumber} to group ${groupId}`
+      );
+      // Close the dialog
+      handleClose();
+      // Open the snackbar
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error(error);
+      // Handle the error here, maybe show an alert or a snackbar
+    }
   };
 
   // Define a handler function for updating the phone number input
@@ -95,11 +100,12 @@ function AddUserButton(props) {
           <Button onClick={handleSubmit}>Add</Button>
         </DialogActions>
       </Dialog>
+      {/*  
       {status === "fulfilled" && (
         <Snackbar
           // Use the snackbarOpen state variable instead of true
           open={snackbarOpen}
-          message={`Added user with phone number ${result.data.phoneNumber} to group ${result.data.groupId}`}
+          //message={`Added user with phone number ${result.data.phoneNumber} to group ${result.data.groupId}`}
           // Set the autoHideDuration prop to 5000
           autoHideDuration={5000}
           onClose={handleSnackbarClose}
@@ -110,12 +116,12 @@ function AddUserButton(props) {
         <Snackbar
           // Use the snackbarOpen state variable instead of true
           open={snackbarOpen}
-          message={`Failed to add user: ${error.data.message}`}
+          //message={`Failed to add user: ${error.data.message}`}
           // Set the autoHideDuration prop to 5000
           autoHideDuration={5000}
           onClose={handleSnackbarClose}
         />
-      )}
+      )}*/}
     </>
   );
 }

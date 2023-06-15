@@ -78,7 +78,7 @@ export const getCompetitiom = async (req,res) =>{
 
 
   try {
-    const quizzes = await quiz.find({ creator_id: data }).populate("group_id");
+    const quizzes = await quiz.find({ creator_id: data }).populate("group_id").populate("attempts.member_id");
     console.log("🚀 ~ file: quiz.js:63 ~ getAdminCompetition ~ quizzes:", quizzes);
 
     // Check the length of the quizzes array here
@@ -131,6 +131,7 @@ export const updateAttempt = async (req,res) =>{
 export const deleteqQuiz = async (req,res) =>{
 
   const ids = req.body;
+  console.log("🚀 ~ file: quiz.js:134 ~ deleteqQuiz ~ ids:", ids)
 
   try {
     await quiz.deleteMany({ _id: { $in: ids } });

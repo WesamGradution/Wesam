@@ -8,15 +8,21 @@ import {
   Box,
   Button,
   CssBaseline,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Typography,
   typography,
 } from "@mui/material";
 import { logOutUser, selectUser } from "../../reduxToolKit/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PeopleIcon from "@mui/icons-material/People";
 
 const customTheme = createTheme({
+  
   typography: {
     fontFamily: "Source Sans Pro",
     color: "white",
@@ -41,9 +47,31 @@ const customTheme = createTheme({
 });
 
 const GroupComponent = () => {
+  const [open, setOpen] = React.useState(false);
+  const [joinGroup, { data: joinData, isSuccess }] = useJoinGroupMutation()
+  const navigate = useNavigate()
+
+  // Define a function to handle opening the dialog
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  // Define a function to handle closing the dialog
+  const handleClose = () => {
+    setOpen(false);
+    
+
+  };
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      handleOpen();
+    }
+  }, [isSuccess]);
+
   const { groupId } = useParams();
   const dispatch = useDispatch();
-  const [joinGroup] = useJoinGroupMutation();
+  
   const { data, isLoading, isError } = useGetGroupInfoQuery(groupId);
 
   const user = useSelector(selectUser);
@@ -63,6 +91,10 @@ const GroupComponent = () => {
 
   const handleJoinGroup = () => {
     joinGroup({ groupId, userId });
+  };
+
+  const handleNavigate = () => {
+    navigate("/");
   };
 
   return (
@@ -146,6 +178,19 @@ const GroupComponent = () => {
           </Button>
         </Box>
       </Box>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Success</DialogTitle>
+        <DialogContent>
+          <DialogContentText color="black">
+            You have successfully joined the group: {data.title}.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleNavigate} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </ThemeProvider>
   );
 };

@@ -15,7 +15,7 @@ const competitionSchema = new Schema({
   attempts: [
     // Array of subdocuments
     {
-      member_id: { type: Schema.Types.ObjectId }, // ObjectId
+      member_id: { type: Schema.Types.ObjectId,ref:"User" }, // ObjectId
       score: { type: Number }, // Number
       finishDate: { type: Date, default: Date.now }, // Date with default value
     },

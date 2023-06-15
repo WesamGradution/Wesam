@@ -5,7 +5,7 @@ const storeSchema = new mongoose.Schema({
     name:String,
     description:String,
     quantity:Number,
-    pricePoint:Number,
+    pricePoint:{type:Number,min:0},
     itemPicture:{ data: Buffer, contentType: String },
     admin:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 })

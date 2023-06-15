@@ -5,6 +5,8 @@ import {
     Button,
     CssBaseline,
     Drawer,
+    Menu,
+    MenuItem,
     Typography,
     useTheme,
   } from "@mui/material";
@@ -20,7 +22,7 @@ import {
   import { useSelector } from "react-redux";
   import { selectUser } from "../../../../reduxToolKit/userSlice";
 import OpportunuteMembers from '../opportunutesMembers';
-
+import { Menu as MenuIcon } from "@mui/icons-material";
 const ShowOpprtunities = () => {
 
     // get id of the admin
@@ -31,6 +33,56 @@ const ShowOpprtunities = () => {
     const {data,isLoading,isError} = useGetOpportunityInfoQuery(_id)
     
     const [deleteOpportunities] = useDeleteOpportunitiesMutation()
+
+    function GroupButton(props) {
+      const [anchorEl, setAnchorEl] = useState(null);
+      const open = Boolean(anchorEl);
+  
+      
+  
+      const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+      };
+  
+      const handleClose = () => {
+        setAnchorEl(null);
+      };
+  
+      const handleChange = (event) => {
+        // send to server logic
+        handleClose();
+      };
+  
+      
+  
+      return (
+        <>
+          <Button
+            id="group-button"
+            variant="contained"
+            color="primary"
+            onClick={handleClick}
+            startIcon={<MenuIcon />}
+          >
+            Groups
+          </Button>
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "group-button",
+            }}
+          >
+            {props.options.map((option) => (
+              <MenuItem key={option} value={option} onClick={handleChange}>
+                {option.title}
+              </MenuItem>
+            ))}
+          </Menu>
+        </>
+      );
+    }
     
 
     const navigate = useNavigate()
@@ -74,6 +126,43 @@ const ShowOpprtunities = () => {
           field: "userLimit",
           headerName: "User Limit",
           flex: 0.5,
+        },
+        {
+          field: "group_id",
+          headerName: "Groups ",
+          flex: 0.5,
+          renderCell: (params) => {
+            // get the options from the params.value, which is an array of ObjectIds
+            const options = params.value;
+            // return the custom component with the options
+            return <GroupButton options={options} />;
+          },
+          disableClickEventBubbling: true,
+        },
+        {
+          field: "delete",
+          headerName: "Delete",
+          flex: 0.5,
+          // Use renderCell to customize the cell rendering
+          renderCell: (params) => {
+            // Define the handler function for clicking the button
+            const handleDelete = async () => {
+              // Get the row id from the params
+              const id = params.id;
+              const ids = []
+              ids.push(id)
+              console.log("🚀 ~ file: index.js:136 ~ handleDelete ~ id:", id)
+              // Call the deleteQuiz mutation with the id
+              await deleteOpportunities(ids);
+              console.log(`Deleted quiz with id ${id}`);
+            };
+            // Return a button that calls the handleDelete function
+            return (
+              <Button onClick={handleDelete} color="primary" variant="contained">
+                Delete
+              </Button>
+            );
+          }
         },
         
         
@@ -124,7 +213,7 @@ const ShowOpprtunities = () => {
         <Box m="1.5rem 2.5rem">
           <CssBaseline />
     
-          <Header title="Oppotunites" subtitle="List of All opportunity you made " />
+          <Header title="Oppotunites" subtitle="List of All opportunity you made ** note: click on the id will show the user participate in the opportunity   " />
           <Box
             mt="40px"
             height="75vh"
@@ -159,11 +248,11 @@ const ShowOpprtunities = () => {
               rows={data || []}
               onCellClick={handleCellClick}
               columns={columns}
-              checkboxSelection
-              onRowSelectionModelChange={(newRowSelectionModel) => {
-                setRowSelectionModel(newRowSelectionModel);
-              }}
-              rowSelectionModel={rowSelectionModel}
+              //checkboxSelection
+              //onRowSelectionModelChange={(newRowSelectionModel) => {
+                //setRowSelectionModel(newRowSelectionModel);
+              //}}
+              //rowSelectionModel={rowSelectionModel}
               error={isError ? "No opportunity found" : null}
             />
           </Box>

@@ -169,7 +169,7 @@ export const AddToGroup = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="Group" subtitle="Group information" />
+                <Header title="Groups" subtitle="List of All groups you made ** note: click on the id will show you the user enter the group   " />
       <Box
         mt="40px"
         height="75vh"
